@@ -32,11 +32,7 @@ const Layout = ({ children }) => (
           <GlobalStyle />
           <Header siteTitle={data.site.siteMetadata.title} />
           <main>{children}</main>
-          <footer>
-            Zaratan © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
+          <footer>Zaratan © {new Date().getFullYear()}</footer>
         </>
       </ThemeProvider>
     )}
