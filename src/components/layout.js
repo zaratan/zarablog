@@ -8,12 +8,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StaticQuery, graphql } from 'gatsby';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import Header from './header';
 import theme from '../styles/BaseTheme';
 import './layout.css';
 import GlobalStyle from '../styles/GlobalStyle';
+
+const Main = styled.main`
+  background-color: ${props => props.theme.base03};
+  width: 100%;
+  max-width: inherit;
+`;
+
+const Footer = styled.footer`
+  background-color: ${props => props.theme.base02};
+  color: ${props => props.theme.yellow};
+  display: flex;
+  justify-content: center;
+`;
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -31,8 +44,8 @@ const Layout = ({ children }) => (
         <>
           <GlobalStyle />
           <Header siteTitle={data.site.siteMetadata.title} />
-          <main>{children}</main>
-          <footer>Zaratan © {new Date().getFullYear()}</footer>
+          <Main>{children}</Main>
+          <Footer>Zaratan © {new Date().getFullYear()}</Footer>
         </>
       </ThemeProvider>
     )}

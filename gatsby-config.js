@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Zaratan.fr`,
+    title: `zaratan@next`,
     description: `Blog personnel de Zaratan. Ce site me sert a poster mes opinions quand à la tech en général`,
     author: `@zaratan`,
   },
