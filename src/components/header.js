@@ -6,6 +6,10 @@ import styled from 'styled-components';
 const SiteTitle = styled.h1`
   font-size: 18px;
   color: #ccc;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  margin: 0;
 
   a {
     color: #ccc;
@@ -17,6 +21,12 @@ const HeaderStyle = styled.header`
   background-color: #555;
   display: flex;
   justify-content: space-between;
+`;
+
+const CircleLink = styled(Link)`
+  height: 25px;
+  display: flex;
+  align-items: center;
 `;
 
 const Circle = styled.span`
@@ -43,6 +53,7 @@ const CircleContainer = styled.div`
   width: 70px;
   align-self: center;
   justify-content: space-around;
+  align-items: center;
   padding-left: 4px;
 `;
 
@@ -53,9 +64,15 @@ const EmptyRight = styled.span`
 const Header = ({ siteTitle }) => (
   <HeaderStyle>
     <CircleContainer>
-      <RedCircle />
-      <YellowCircle />
-      <GreenCircle />
+      <CircleLink to="/">
+        <RedCircle />
+      </CircleLink>
+      <CircleLink to="/">
+        <YellowCircle />
+      </CircleLink>
+      <CircleLink to="/">
+        <GreenCircle />
+      </CircleLink>
     </CircleContainer>
     <SiteTitle>
       <Link to="/">{siteTitle}</Link>
