@@ -5,52 +5,71 @@
  * See: https://www.gatsbyjs.org/docs/static-query/
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { StaticQuery, graphql } from 'gatsby';
 import styled, { ThemeProvider } from 'styled-components';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faHome,
+  faUser,
+  faSun,
+  faMoon,
+} from '@fortawesome/free-solid-svg-icons';
 
 import Header from './header';
-import theme from '../styles/BaseTheme';
+import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 import './layout.css';
 import GlobalStyle from '../styles/GlobalStyle';
 
+[faHome, faSun, faUser, faMoon].forEach(icon => library.add(icon));
+
 const Main = styled.main`
-  background-color: ${props => props.theme.base03};
+  background-color: ${props => props.theme.base3};
   width: 100%;
   max-width: inherit;
 `;
 
 const Footer = styled.footer`
-  background-color: ${props => props.theme.base02};
+  background-color: ${props => props.theme.base2};
   color: ${props => props.theme.yellow};
   display: flex;
   justify-content: center;
 `;
 
-const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
+const Layout = ({ children }) => {
+  const [isDark, setIsDark] = useState(true);
+
+  const theme = Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme);
+
+  return (
+    <StaticQuery
+      query={graphql`
+        query SiteTitleQuery {
+          site {
+            siteMetadata {
+              title
+            }
           }
         }
-      }
-    `}
-    render={data => (
-      <ThemeProvider theme={theme}>
-        <>
-          <GlobalStyle />
-          <Header siteTitle={data.site.siteMetadata.title} />
-          <Main>{children}</Main>
-          <Footer>Zaratan © {new Date().getFullYear()}</Footer>
-        </>
-      </ThemeProvider>
-    )}
-  />
-);
+      `}
+      render={data => (
+        <ThemeProvider theme={theme}>
+          <>
+            <GlobalStyle />
+            <Header
+              siteTitle={data.site.siteMetadata.title}
+              setIsDark={setIsDark}
+              isDark={isDark}
+            />
+            <Main>{children}</Main>
+            <Footer>Zaratan © {new Date().getFullYear()}</Footer>
+          </>
+        </ThemeProvider>
+      )}
+    />
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
