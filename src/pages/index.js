@@ -72,7 +72,7 @@ TitleHtml.propTypes = {
 };
 
 const IndentSpan = styled.span`
-  color: ${props => props.theme.base1}
+  color: ${props => props.theme.base1};
   margin-left: 20px;
   @media only screen and (max-width: 700px) {
     display: block;

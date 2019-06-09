@@ -17,6 +17,9 @@ const SiteTitle = styled.h1`
     :hover {
       color: ${props => props.theme.orange};
     }
+    :focus {
+      color: ${props => props.theme.orange};
+    }
   }
 
   @media only screen and (max-width: 500px) {
@@ -135,7 +138,7 @@ const Header = ({ siteTitle, setIsDark, isDark }) => (
       </YellowCircle>
       <CircleLink to="/">
         <GreenCircle>
-          <Icon icon="user" alt="Profile" />
+          <Icon icon="user" />
         </GreenCircle>
       </CircleLink>
     </CircleContainer>
