@@ -21,21 +21,25 @@ const Yellow = styled.span`
 
 const Tag = ({ children, type, tags, first }) => (
   <IndentSpan>
-    {'<'}
-    <Magenta>{`${type}${tags.length > 0 ? ' ' : ''}`}</Magenta>
-    {tags.map(tag => {
-      const [k, v] = tag;
-      return (
-        <span>
-          <Cyan>{k}</Cyan>=<Yellow>"{v}"</Yellow>
-        </span>
-      );
-    })}
-    {'>'}
-    {children}
-    {'</'}
-    <Magenta>{type}</Magenta>
-    {'>'}
+    <TagSpan>
+      {'<'}
+      <Magenta>{`${type}${tags.length > 0 ? ' ' : ''}`}</Magenta>
+      {tags.map(tag => {
+        const [k, v] = tag;
+        return (
+          <span>
+            <Cyan>{k}</Cyan>=<Yellow>"{v}"</Yellow>
+          </span>
+        );
+      })}
+      {'>'}
+    </TagSpan>
+    <ContentSpan>{children}</ContentSpan>
+    <TagSpan>
+      {'</'}
+      <Magenta>{type}</Magenta>
+      {'>'}
+    </TagSpan>
   </IndentSpan>
 );
 
@@ -68,14 +72,31 @@ TitleHtml.propTypes = {
 };
 
 const IndentSpan = styled.span`
+  color: ${props => props.theme.base1}
   margin-left: 20px;
+  @media only screen and (max-width: 700px) {
+    display: block;
+  }
+`;
+
+const TagSpan = styled.span`
+  @media only screen and (max-width: 700px) {
+    display: block;
+  }
+`;
+
+const ContentSpan = styled.span`
+  @media only screen and (max-width: 700px) {
+    display: block;
+    margin-left: 20px;
+  }
 `;
 
 const TitleList = styled.ul`
   margin: 50px 20px 20px 20px;
 `;
 
-const TitleItem = styled.li`
+const TitleItem = styled(Link)`
   transition: margin 0.2s ease-in-out;
   font-size: 20px;
   :hover {
