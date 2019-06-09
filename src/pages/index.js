@@ -99,9 +99,14 @@ const TitleList = styled.ul`
 const TitleItem = styled(Link)`
   display: flex;
   transition: padding 0.2s ease-in-out;
+  color: ${props => props.theme.base1};
   font-size: 20px;
   :hover {
     padding-left: 20px;
+    color: ${props => props.theme.base1};
+  }
+  :focus {
+    color: ${props => props.theme.base1};
   }
   font-family: Inconsolata;
   @media only screen and (max-width: 900px) {
