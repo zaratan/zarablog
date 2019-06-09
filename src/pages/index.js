@@ -97,10 +97,15 @@ const TitleList = styled.ul`
 `;
 
 const TitleItem = styled(Link)`
-  transition: margin 0.2s ease-in-out;
+  display: flex;
+  transition: padding 0.2s ease-in-out;
   font-size: 20px;
   :hover {
-    margin-left: 20px;
+    padding-left: 20px;
+  }
+  font-family: Inconsolata;
+  @media only screen and (max-width: 900px) {
+    flex-direction: column;
   }
 `;
 
@@ -108,10 +113,12 @@ const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
     <TitleList>
-      <TitleItem>
-        <DateHtml>03 Fev 2019</DateHtml>
-        <TitleHtml>Réduire ses controlleurs et modèles</TitleHtml>
-      </TitleItem>
+      <li>
+        <TitleItem>
+          <DateHtml>03 Fev 2019</DateHtml>
+          <TitleHtml>Réduire ses controlleurs et modèles</TitleHtml>
+        </TitleItem>
+      </li>
     </TitleList>
   </Layout>
 );
