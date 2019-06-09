@@ -15,8 +15,8 @@ export default {
 };
 
 export const lightTheme = {
-  base0: '#839496',
-  base1: '#93a1a1',
+  base1: '#586e75',
+  base0: '#657b83',
   base2: '#eee8d5',
   base3: '#fdf6e3',
 };
@@ -24,6 +24,6 @@ export const lightTheme = {
 export const darkTheme = {
   base3: '#002b36',
   base2: '#073642',
-  base1: '#586e75',
-  base0: '#657b83',
+  base0: '#839496',
+  base1: '#93a1a1',
 };

@@ -23,7 +23,7 @@ body {
   min-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: hsla(0, 0%, 0%, 0.8);
+  color: ${props => props.theme.base1};
   word-wrap: break-word;
   font-kerning: normal;
 }

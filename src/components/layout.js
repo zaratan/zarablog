@@ -19,7 +19,6 @@ import {
 
 import Header from './header';
 import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
-import './layout.css';
 import GlobalStyle from '../styles/GlobalStyle';
 
 [faHome, faSun, faUser, faMoon].forEach(icon => library.add(icon));
@@ -35,6 +34,8 @@ const Footer = styled.footer`
   color: ${props => props.theme.yellow};
   display: flex;
   justify-content: center;
+  height: 25px;
+  align-items: center;
 `;
 
 const Layout = ({ children }) => {
