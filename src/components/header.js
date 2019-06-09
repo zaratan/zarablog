@@ -15,6 +15,11 @@ const SiteTitle = styled.h1`
   a {
     color: #ccc;
   }
+  @media only screen and (max-width: 500px) {
+    font-size: 24px;
+    height: 50px;
+    justify-self: right;
+  }
 `;
 
 const HeaderStyle = styled.header`
@@ -22,6 +27,10 @@ const HeaderStyle = styled.header`
   background-color: #555;
   display: flex;
   justify-content: space-between;
+  @media only screen and (max-width: 500px) {
+    height: 50px;
+    padding-right: 14px;
+  }
 `;
 
 const CircleLink = styled(Link)`
@@ -43,6 +52,9 @@ const CircleLink = styled(Link)`
     box-shadow: none;
     color: #000;
   }
+  @media only screen and (max-width: 500px) {
+    height: 50px;
+  }
 `;
 
 const Circle = styled.span`
@@ -55,6 +67,10 @@ const Circle = styled.span`
   padding: 0;
   height: 14px;
   width: 14px;
+  @media only screen and (max-width: 500px) {
+    height: 28px;
+    width: 28px;
+  }
 `;
 
 const Icon = styled(FontAwesomeIcon)`
@@ -64,6 +80,10 @@ const Icon = styled(FontAwesomeIcon)`
   transition: opacity 0.2s ease-in-out;
   :hover {
     opacity: 0.9;
+  }
+  @media only screen and (max-width: 500px) {
+    height: 20px;
+    width: 20px;
   }
 `;
 
@@ -86,10 +106,16 @@ const CircleContainer = styled.div`
   justify-content: space-around;
   align-items: center;
   padding-left: 4px;
+  @media only screen and (max-width: 500px) {
+    width: 140px;
+  }
 `;
 
 const EmptyRight = styled.span`
   width: 70px;
+  @media only screen and (max-width: 500px) {
+    display: none;
+  }
 `;
 
 const Header = ({ siteTitle, setIsDark, isDark }) => (
