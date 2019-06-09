@@ -106,6 +106,7 @@ const TitleItem = styled(Link)`
     color: ${props => props.theme.base1};
   }
   :focus {
+    padding-left: 20px;
     color: ${props => props.theme.base1};
   }
   font-family: Inconsolata;

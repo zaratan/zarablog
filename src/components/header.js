@@ -5,16 +5,20 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const SiteTitle = styled.h1`
-  font-size: 18px;
-  color: #ccc;
+  font-size: 24px;
+  color: ${props => props.theme.base1};
   display: flex;
   align-items: center;
-  height: 25px;
+  height: 40px;
   margin: 0;
 
   a {
-    color: #ccc;
+    color: ${props => props.theme.base1};
+    :hover {
+      color: ${props => props.theme.orange};
+    }
   }
+
   @media only screen and (max-width: 500px) {
     font-size: 24px;
     height: 50px;
@@ -23,8 +27,8 @@ const SiteTitle = styled.h1`
 `;
 
 const HeaderStyle = styled.header`
-  height: 25px;
-  background-color: #555;
+  height: 40px;
+  background-color: ${props => props.theme.base2};
   display: flex;
   justify-content: space-between;
   @media only screen and (max-width: 500px) {
@@ -34,7 +38,7 @@ const HeaderStyle = styled.header`
 `;
 
 const CircleLink = styled(Link)`
-  height: 25px;
+  height: 40px;
   display: flex;
   align-items: center;
   :hover {
@@ -65,8 +69,8 @@ const Circle = styled.span`
   justify-content: center;
   color: #000;
   padding: 0;
-  height: 14px;
-  width: 14px;
+  height: 24px;
+  width: 24px;
   @media only screen and (max-width: 500px) {
     height: 28px;
     width: 28px;
@@ -74,8 +78,8 @@ const Circle = styled.span`
 `;
 
 const Icon = styled(FontAwesomeIcon)`
-  width: 10px;
-  height: 10px;
+  width: 18px;
+  height: 18px;
   opacity: 0.6;
   transition: opacity 0.2s ease-in-out;
   :hover {
@@ -101,7 +105,7 @@ const GreenCircle = styled(Circle)`
 
 const CircleContainer = styled.div`
   display: flex;
-  width: 70px;
+  width: 120px;
   align-self: center;
   justify-content: space-around;
   align-items: center;
