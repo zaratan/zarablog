@@ -42,30 +42,45 @@ const HeaderStyle = styled.header`
 
 const CircleLink = styled(Link)`
   height: 40px;
+  width: 30px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+  transition: height 0.2s ease-in-out;
+  transition: width 0.2s ease-in-out;
+
+  :focus,
   :hover {
-    color: #000;
-  }
-
-  :focus {
     outline: none;
     box-shadow: none;
-    color: #000;
+
+    span {
+      height: 28px;
+      width: 28px;
+    }
+    svg,
+    a {
+      outline: none;
+      box-shadow: none;
+      color: #000;
+      opacity: 1;
+    }
   }
 
-  :focus svg {
-    outline: none;
-    box-shadow: none;
-    color: #000;
-  }
   @media only screen and (max-width: 500px) {
     height: 50px;
   }
 `;
 
+const CircleButton = styled(CircleLink).attrs({
+  as: 'span',
+  tabIndex: 0,
+  role: 'button',
+})``;
+
 const Circle = styled.span`
-  background-color: #666;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -84,10 +99,6 @@ const Icon = styled(FontAwesomeIcon)`
   width: 18px;
   height: 18px;
   opacity: 0.6;
-  transition: opacity 0.2s ease-in-out;
-  :hover {
-    opacity: 0.9;
-  }
   @media only screen and (max-width: 500px) {
     height: 20px;
     width: 20px;
@@ -125,29 +136,42 @@ const EmptyRight = styled.span`
   }
 `;
 
-const Header = ({ siteTitle, setIsDark, isDark }) => (
-  <HeaderStyle>
-    <CircleContainer>
-      <CircleLink to="/">
-        <RedCircle>
-          <Icon icon="home" />
-        </RedCircle>
-      </CircleLink>
-      <YellowCircle onClick={() => setIsDark(!isDark)}>
-        {isDark ? <Icon icon="sun" /> : <Icon icon="moon" />}
-      </YellowCircle>
-      <CircleLink to="/">
-        <GreenCircle>
-          <Icon icon="user" />
-        </GreenCircle>
-      </CircleLink>
-    </CircleContainer>
-    <SiteTitle>
-      <Link to="/">{siteTitle}</Link>
-    </SiteTitle>
-    <EmptyRight />
-  </HeaderStyle>
-);
+const Header = ({ siteTitle, setIsDark, isDark }) => {
+  const actOnLightButton = event => {
+    if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
+    setIsDark(!isDark);
+  };
+
+  return (
+    <HeaderStyle>
+      <CircleContainer>
+        <CircleLink aria-label="home" to="/">
+          <RedCircle>
+            <Icon icon="home" />
+          </RedCircle>
+        </CircleLink>
+        <CircleButton
+          aria-label="light"
+          onClick={actOnLightButton}
+          onKeyDown={actOnLightButton}
+        >
+          <YellowCircle>
+            {isDark ? <Icon icon="sun" /> : <Icon icon="moon" />}
+          </YellowCircle>
+        </CircleButton>
+        <CircleLink aria-label="profile" to="/">
+          <GreenCircle>
+            <Icon icon="user" />
+          </GreenCircle>
+        </CircleLink>
+      </CircleContainer>
+      <SiteTitle>
+        <Link to="/">{siteTitle}</Link>
+      </SiteTitle>
+      <EmptyRight />
+    </HeaderStyle>
+  );
+};
 
 Header.propTypes = {
   siteTitle: PropTypes.string,

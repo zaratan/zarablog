@@ -19,7 +19,7 @@ const Yellow = styled.span`
   color: ${props => props.theme.yellow};
 `;
 
-const Tag = ({ children, type, tags, first }) => (
+const Tag = ({ children, type, tags }) => (
   <IndentSpan>
     <TagSpan>
       {'<'}
@@ -27,7 +27,7 @@ const Tag = ({ children, type, tags, first }) => (
       {tags.map(tag => {
         const [k, v] = tag;
         return (
-          <span>
+          <span key={k}>
             <Cyan>{k}</Cyan>=<Yellow>"{v}"</Yellow>
           </span>
         );
@@ -120,7 +120,7 @@ const IndexPage = () => (
     <SEO title="Home" />
     <TitleList>
       <li>
-        <TitleItem>
+        <TitleItem to="/">
           <DateHtml>03 Fev 2019</DateHtml>
           <TitleHtml>Réduire ses controlleurs et modèles</TitleHtml>
         </TitleItem>
