@@ -47,12 +47,10 @@ Tag.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.string.isRequired,
   tags: PropTypes.array,
-  first: PropTypes.bool,
 };
 
 Tag.defaultProps = {
   tags: [],
-  first: false,
 };
 
 const DateHtml = ({ children }) => (
