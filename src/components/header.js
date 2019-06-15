@@ -159,7 +159,7 @@ const Header = ({ siteTitle, setIsDark, isDark }) => {
             {isDark ? <Icon icon="sun" /> : <Icon icon="moon" />}
           </YellowCircle>
         </CircleButton>
-        <CircleLink aria-label="profile" to="/">
+        <CircleLink aria-label="profile" to="/profile">
           <GreenCircle>
             <Icon icon="user" />
           </GreenCircle>

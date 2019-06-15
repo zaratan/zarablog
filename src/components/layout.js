@@ -15,13 +15,31 @@ import {
   faUser,
   faSun,
   faMoon,
+  faMugHot,
+  faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faTwitter,
+  faPatreon,
+  faGithub,
+} from '@fortawesome/free-brands-svg-icons';
 
 import Header from './header';
 import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 import GlobalStyle from '../styles/GlobalStyle';
 
-[faHome, faSun, faUser, faMoon].forEach(icon => library.add(icon));
+[
+  faHome,
+  faSun,
+  faUser,
+  faMoon,
+  faEnvelope,
+  faMugHot,
+  faTwitter,
+  faPatreon,
+  faGithub,
+].forEach(icon => library.add(icon));
 
 const Main = styled.main`
   background-color: ${props => props.theme.base3};
