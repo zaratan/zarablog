@@ -13,6 +13,7 @@ const PictureContainer = styled.div`
   width: 200px;
   height: 200px;
   margin: 10px 0;
+  background-color: black;
 `;
 
 const ProfileContainer = styled.div`
@@ -25,9 +26,6 @@ const ProfileContainer = styled.div`
 `;
 
 const Line = styled.div``;
-const Char = styled.span.attrs(({ red, green, blue }) => ({
-  style: { color: `rgb(${red}, ${green}, ${blue})` },
-}))``;
 
 const ProfilePage = () => {
   const { data } = useStaticQuery(graphql`
@@ -52,9 +50,9 @@ const ProfilePage = () => {
           {data.map(line => (
             <Line>
               {line.map(char => (
-                <Char red={char.r} green={char.g} blue={char.b}>
+                <span style={{ color: `rgb(${char.r},${char.g},${char.b})` }}>
                   {char.v}
-                </Char>
+                </span>
               ))}
             </Line>
           ))}
