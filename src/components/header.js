@@ -136,10 +136,21 @@ const EmptyRight = styled.span`
   }
 `;
 
-const Header = ({ siteTitle, setIsDark, isDark }) => {
+const Header = ({
+  siteTitle,
+  setIsDark,
+  isDark,
+  setProfileOpen,
+  isProfileOpen,
+}) => {
   const actOnLightButton = event => {
     if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
     setIsDark(!isDark);
+  };
+
+  const actOnProfileButton = event => {
+    if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
+    setProfileOpen(!isProfileOpen);
   };
 
   return (
@@ -159,11 +170,15 @@ const Header = ({ siteTitle, setIsDark, isDark }) => {
             {isDark ? <Icon icon="sun" /> : <Icon icon="moon" />}
           </YellowCircle>
         </CircleButton>
-        <CircleLink aria-label="profile" to="/profile">
+        <CircleButton
+          aria-label="profile"
+          onClick={actOnProfileButton}
+          onKeyDown={actOnProfileButton}
+        >
           <GreenCircle>
             <Icon icon="user" />
           </GreenCircle>
-        </CircleLink>
+        </CircleButton>
       </CircleContainer>
       <SiteTitle>
         <Link to="/">{siteTitle}</Link>
@@ -177,6 +192,8 @@ Header.propTypes = {
   siteTitle: PropTypes.string,
   setIsDark: PropTypes.func.isRequired,
   isDark: PropTypes.bool.isRequired,
+  setProfileOpen: PropTypes.func.isRequired,
+  isProfileOpen: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {

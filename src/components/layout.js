@@ -28,6 +28,7 @@ import {
 import Header from './header';
 import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 import GlobalStyle from '../styles/GlobalStyle';
+import Profile from './profile';
 
 [
   faHome,
@@ -45,6 +46,21 @@ const Main = styled.main`
   background-color: ${props => props.theme.base3};
   width: 100%;
   max-width: inherit;
+  align-self: flex-start;
+  flex-shrink: 1;
+  @media only screen and (max-width: 700px) {
+    display: ${props => (props.profileOpen ? `none` : `flex`)};
+  }
+`;
+
+const MainWrapper = styled.div`
+  background-color: ${props => props.theme.base3};
+  width: 100%;
+  max-width: inherit;
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
 `;
 
 const Footer = styled.footer`
@@ -56,10 +72,24 @@ const Footer = styled.footer`
   align-items: center;
 `;
 
+const AsideProfile = styled.aside`
+  display: ${props => (props.profileOpen ? `block` : `none`)};
+  min-width: 400px;
+
+  @media only screen and (min-width: 700px) {
+    width: 400px;
+    border-left: 1px solid ${props => props.theme.yellow};
+  }
+`;
+
 const Layout = ({ children }) => {
   const [isDark, setIsDark] = useState(true);
+  const [isProfileOpen, setProfileOpen] = useState(false);
 
   const theme = Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme);
+  const childrenWithProps = React.Children.map(children, child =>
+    React.cloneElement(child, { isProfileOpen })
+  );
 
   return (
     <StaticQuery
@@ -80,8 +110,15 @@ const Layout = ({ children }) => {
               siteTitle={data.site.siteMetadata.title}
               setIsDark={setIsDark}
               isDark={isDark}
+              setProfileOpen={setProfileOpen}
+              isProfileOpen={isProfileOpen}
             />
-            <Main>{children}</Main>
+            <MainWrapper>
+              <Main profileOpen={isProfileOpen}>{childrenWithProps}</Main>
+              <AsideProfile profileOpen={isProfileOpen}>
+                <Profile />
+              </AsideProfile>
+            </MainWrapper>
             <Footer>Zaratan © {new Date().getFullYear()}</Footer>
           </>
         </ThemeProvider>
