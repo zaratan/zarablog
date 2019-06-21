@@ -1,0 +1,113 @@
+---
+title: "Il faut bien commencer quelque part"
+date: 2013-10-15
+categories:
+  - Réflexion
+  - Divers
+  - Technologie
+---
+
+_"Il faut bien commencer quelque part"_ est une réflexion qui est souvent faite de nos jours et qui semble porter ses fruits.
+C'est-à-dire qu'il vaut mieux faire quelque chose d'imparfait et de raté que faire un projet parfait qui ne verra jamais le jour.
+
+Tout un pan de l'informatique se développe de manière à simplifier le processus de création d'un mini projet pour tester un concept,
+échouer rapidement, apprendre de cet échec et recommencer.
+
+Ce thème me parait approprié pour un premier article. Je vais donc essayer d'en faire le tour.
+
+<!--more-->
+
+# Le concept
+
+La maxime vient du fait réaliser un projet même incomplet à plusieurs avantages:
+
+- C'est valorisant.
+- Ça permet de tester son idée en conditions réelles.
+- Ça permet de tester son idée auprès des autres.
+- On fait vraiment quelque chose.
+- Ça permet éventuellement de se faire une idée sur une technologie.
+- On ne s'embourbe pas dans l'attente de la finalisation de spécifications.
+
+En un temps relativement court on peut avoir un ersatz de projet, qui fait 2% de ce qu'on souhaite vraiment.
+Mais celui-ci permet de se donner une idée de si oui ou non on veut vraiment le mener au bout.
+Ça fait gagner du temps, ça permet de comprendre ce qui ne va pas dans notre idée ou nos choix pour faire mieux la fois suivante.
+
+On peut résumer la méthode en:
+
+> "Faire et échouer rapidement. Les échecs apprennent autant (voir plus) que les réussites."
+
+# Retravailler dans le vert
+
+Si jamais un de vos mini-projets venait à marcher/vous plaire/valoir le coup,
+il sera temps de s'y mettre et d'implémenter ce qu'il manque.
+
+Ici encore, on profite du fait qu'il y a déjà quelque chose de fait.
+On a un projet qui marche auquel on ajoute des fonctionnalités qui marchent.
+On reste dans un espèce de cercle vertueux du "toujours plus".
+
+## Une expression qui vient de la TDD
+
+L'expression "Refactoriser dans le vert" vient de la TDD ([Test Driven Development](http://fr.wikipedia.org/wiki/Test_Driven_Development)).
+Et plus particulièrement du framework Rspec qui conseille de fonctionner avec la boucle de développement suivante :
+
+1. Le test n'est pas codé (jaune)
+2. Le test est codé mais ça ne marche pas (rouge)
+3. Le test marche (vert), on peut améliorer le code tout en restant dans le vert.
+
+Ici on reste dans la même idée
+
+1. On a l'idée d'un projet (jaune)
+2. On code un prototype (rouge)
+3. L'idée est validée (vert), on peut itérer dessus tout en restant validé par son public.
+
+## Un exemple dans l'histoire de l'informatique
+
+Un exemple flagrant de ce fonctionnement est la naissance de la norme Wi-Fi (ou IEEE 802.11).
+
+En parallèle sont apparues 2 normes Wi-Fi (Une norme américaine) et HiperLan (son pendant européen).
+La norme HiperLan était en de nombreux points meilleure que la norme Wi-Fi (le support par défaut d'un protocole de sécurité robuste par exemple).
+
+Au final on utilise tous aujourd'hui la norme Wi-Fi qui a _eu_ les défauts que l'on sait (avec le protocole de sécurité par WEP par exemple).
+Et ça parce que la norme HiperLan était plus compliquée à mettre en œuvre et ne s'est pas rapprochée du marché assez vite.
+
+# Le développement des technologies en ce sens
+
+Comme annoncé en introduction, j'ai l'impression qu'une grosse partie des technologies informatiques s'orientent en ce sens.
+Je vais essayer de vous présenter quelques outils qui me font dire ça.
+
+## Les frameworks de développement web
+
+Au cours des 10 dernières années, des frameworks de développement web visant à fluidifier la création d'un projet sont apparus.
+
+[RoR](http://rubyonrails.org/) pour ne citer que lui, a introduit un principe de _"convention over configuration"_
+Il permet au développeur de gagner du temps en ne le passant pas à configurer un grand nombre d'aspects du projet.
+
+Il introduit aussi un concept de scaffold qui génère en quelques secondes tout depuis le modèle jusqu'aux vues.
+Il rajoute aussi un concept de coder moins pour avoir une version _"viable"_ de son projet.
+
+[Meteor.js](http://www.meteor.com/) est un framework entièrement js récent (début 2012) créé pour développer rapidement (2-4h de temps) un site fonctionnel.
+Il intègre un grand nombre de briques logicielles et une façon très simple de les utiliser.
+Il est orienté temps réel avec une synchronisation des données avec le serveur de façon transparente.
+
+## Twitter Bootstrap et confrères
+
+On va vers une normalisation des interfaces web, de plus en plus de sites utilisent un framework css/js de type [Bootstrap](http://getbootstrap.com).
+Ces frameworks nous habituent à des interfaces unifiées, identiques (combien de sites avez vous parcouru avec un surlignage bleuté dans les formulaires?).
+
+Certains framework html/css/js apparaissent aussi normalisant encore plus les interfaces.
+[Flat-Ui](http://designmodo.github.io/Flat-UI/) est un bon exemple de ce genre de framework.
+
+Ce style de framework permet de développer un produit fini et ergonomique en encore moins de temps tout en conservant les habitudes de navigation de l'utilisateur.
+
+## Ne faites que la première page
+
+Il existe même des générateurs de landing page ([Strikingly](http://www.strikingly.com) par exemple) permettant de créer une page vitrine pour tester un concept de projet en 1h tout au plus.
+
+# Conclusion
+
+Faites des choses, même si c'est imparfait ça sera toujours plus rentable qu'hésiter et regarder les autres avancer.
+Testez vos idées en ne faisant quasiment rien.
+Vous n'avez plus d'excuses.
+
+Ce blog est un exemple de ce principe. Nous verrons si l'essai sera transformé ou pas.
+N'hésitez pas à me faire la moindre remarque, j'essayerai d'améliorer les choses en ce sens.

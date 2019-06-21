@@ -1,0 +1,68 @@
+---
+type: post
+title: "Conseils sur git"
+date: 2018-05-04T19:27:00
+comments: true
+categories:
+  - THP
+  - outils
+---
+
+Outils et bonnes pratiques sur git.
+
+<!-- more -->
+
+{{< youtube on-fDrUPkOM >}}
+
+## Commandes et alias
+
+Ajouté un ensemble d'alias sur git peut vous économiser beaucoup de temps.
+
+- `git => g`: mettre un alias disant `g` lancera `git`.
+- `g co`: pour `git checkout`
+- `g ci`: pour `git commit -v`
+- `g ca`: pour `git commit --amend`
+- `g lg`: pour des logs mieux formatés (cf lien ci dessous)
+- `gst`: pour `git status`. C'est probablement LA commande que vous allez taper tout le temps.
+
+Le lien vers mon fichier `.gitconfig`: https://github.com/denispasin/dotfiles/blob/master/git/gitconfig.symlink
+
+## Bonnes pratiques et commandes utiles
+
+- `git blame [file]`: Ça permet de savoir qui a modifié chaque ligne d'un fichier pour la dernière fois. Ça permet de comprendre pourquoi un changement est apparu.
+- `git checkout [commit] -- [file]`: Ça permet de récupérer un fichier dans l'état dans lequel il était a un commit donné.
+- `git stash`: met de coté vos changement nos commités. Vous pouvez ensuite les laisser là pour toujours ou les récupérer avec `git stash pop`
+- Votre branche master doit rester "green" c'est a dire dans un état correct autant que possible. Dans l'idée je devrais pouvoir la déployer en production a tout moment et un client pourra l'utiliser.
+- Votre shell DOIT vous donner votre branche courant et un status global de votre branche. Ça vous assurera d'un coup d'œil que vous êtes pas en train de faire des bêtises.
+- merge before before merging back (surtout sans github). Il faut merger(/rebase sur) la branche vers laquelle on veut merger. Ça permet de gérer les conflits dans sa branche et d'avoir une branche qui est dans l'état final et donc testable avant de pousser ce code dans master.
+
+## Commandes dangereuses
+
+- Tout ce qui contient `--force`. Ça ne devrait être utilisé que si vous êtes vraiment sur de ce que vous faites. En générale uniquement sur les branche ou on est seul a travailler.
+- Tout ce qui contient `--hard`. On peut perdre des heures de travail non commité avec ça.
+- `rebase` rebase est Très puissant (notamment avec le mode `-i`) mais vous offre aussi de nombreuses façons de vous tirer une balle dans la cuisse. Ça permet de réécrire l'historique de commit. Il est donc relativement facile de perdre du code avec :D Et en "bonus" on va peut être devoir utiliser `--force` dans notre push suivant.
+
+## Outils
+
+- `tig` Un outil pour manipuler `git` en ligne de commande et notamment les logs.
+- Crédiblement tous les éditeurs de la terre pour le diff/merge
+- Un bon set d'alias
+- Si vous utilisez Github. [hub](https://hub.github.com/) est un outil très pratique qui permet entre autre de faire les pull-request directement en ligne de commande.
+
+## Workflow de travail
+
+Je vois principalement 2 "workflow" de travail principal.
+
+- Everything in master: Je le conseille pour des équipes expérimentées et/ou petites. Toutes les features sont dans des branches partant de master. On merge dans master dès que notre feature est validée par quelqu'un.
+- Git flow like: [Git flow](https://danielkummer.github.io/git-flow-cheatsheet/index.fr_FR.html) est un outil qui fonctionne avec deux branches principales (Dev/Master). Le workflow est plus robuste mais plus lourd. Il marche très bien dans un contexte de NON-deploiement continu.
+
+## Github
+
+- Ne pas merger directement dans master à la main. Ever. Toujours faire des pull-request.
+- Les Pull-request devraient déclancher des tests automatisés et nécessiter une code review par quelqu'un d'autre avant d'être mergée. Il est vivement conseillé de merger la branche cible dans la branche de PR pour avoir une version testable avec tous les commits (voir plus haut).
+- Issues: Travailler avec les issues Github c'est souvent suffisant pour décrire des features sur ses projets. On a donc les descriptions des taches, le code et les pull-request qui valident/ferment ces taches au même endroit.
+- Projets: Ça permet de gérer ses issues en colonnes un peu comme un trello. Ça permet d'avoir une vision d'ensemble sur où on est arrivé dans le projet, qui fait quoi et qu'est-ce qu'il reste a faire.
+
+## Conclusion
+
+J'espère que tout ça vous a plu et vous sera utile. N'hésitez pas a m'envoyer des <3 :)

@@ -1,0 +1,297 @@
+---
+type: post
+title: "Turtle Family 1"
+date: 2018-03-02T10:06:00
+comments: true
+categories: 
+  - THP
+  - code
+  - ruby
+  - scratch
+---
+On construit from scratch une app de tortues \o/
+
+<!-- more -->
+
+{{< youtube ggnCfd3bmyE >}}
+
+Voilà le code produit à la fin de la vidéo: https://github.com/denispasin/turtle_family/tree/end_session_1
+
+Dans cette vidéo, je construit une API REST qui fait un CRUD de tortue. Tout~ est testé (pas forcement en TDD).
+Il y a eu un petit cafouillage autour de ma database postgres m'obligeant a mettre Docker. J'en reparlerai proprement dans une prochaine vidéo…
+Vous pouvez aussi aller voir ma vidéo sur le sujet: [Docker](https://www.zaratan.fr/blog/2018/02/16/docker)
+
+Voici un petit résumé de ce qu'on a vu. En espérant que ça vous aide.
+
+## Les gems qu'on a utilisé:
+
+#### Partout
+
+* [active_model_serializers](https://github.com/rails-api/active_model_serializers/tree/0-10-stable): Permet de gérer ses formats de retour json dans des fichiers de serializers
+
+#### En dev + test
+
+* [rspec-rails](https://github.com/rspec/rspec-rails): rspec pour rails \o/
+* [rubocop](https://github.com/bbatsov/rubocop): rubocop ça check la syntaxe de ton code :)
+
+#### En test
+
+* [factory_bot_rails](https://github.com/thoughtbot/factory_bot_rails): Permet de créer facilement des instance de modèle en database.
+* [faker](https://github.com/stympy/faker): Permet de générer de fausses données de test.
+* [nyan-cat-formatter](https://github.com/mattsears/nyan-cat-formatter): C'est mignon les nyan cat pendant les tests :)
+* [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers): Permet de vérifier les validations facilement dans les tests.
+
+## Rappel sur Rspec
+
+Je vais faire un petit résumé sur certains concepts de rspec mais je vous invite a regarder la doc en détail.
+Cette page notamment: https://relishapp.com/rspec/rspec-expectations/v/3-7/docs/built-in-matchers
+
+### Les mots clés
+
+#### describe/context
+
+Les deux font la même chose et permettent de définir un "contexte" de test. Et donc de séparer nos tests pour les rendre plus lisibles.
+
+On utilisera `describe` plus pour préciser des noms de classe/méthode: 
+```ruby
+describe MaClass do
+  describe "#new" do
+    …
+  end
+end
+```
+
+On utilisera `context` pour décrire un contexte plus global:
+```ruby
+describe MaClass do
+  context "when the user isn't logged in" do
+    …
+  end
+end
+```
+
+#### it
+
+`it` permet de faire un test. Il est conseillé de ne pas mettre "should" dedans. Par exemple:
+
+```ruby
+it "has 3 elements" do
+  …
+end
+```
+
+on notera l'utilisation de la troisième personne du singulier. Pourquoi fait on cela ? Outre le fait de rendre les tests plus proches de l'anglais, c'est parce qu'après, rspec permet de générer une "doc" de cette façon:
+```bash
+rspec --format doc
+```
+
+Ce qui donne:
+```bash
+TurtlesController
+  #create
+    creates the turtle
+    with no name
+      fails
+  #index
+    returns all the turtles
+  #show
+    returns the turtle
+```
+
+#### expect
+
+Ça permet de tester quelque chose. Une liste de matchers peut être trouvé ici: https://relishapp.com/rspec/rspec-expectations/v/3-7/docs/built-in-matchers
+```ruby
+expect([1,2,3]).to include(2)
+```
+
+#### let/let!
+
+`let` et son ami `let!` vous permettent de définir une variable qui sera utilisable dans vos tests. Les `let` sont scope par `describe`/`context`.
+
+Un exemple d'utilisation:
+```ruby
+context "this will work" do
+  let(:ma_var) { "yop" }
+
+  it "checks let" do
+    expect(ma_var).to eq("yop")
+  end
+end
+
+context "this will not work" do
+  it "checks let" do
+    expect(ma_var).to eq("yop")
+  end
+end
+```
+
+La différence entre `let` et `let!` c'est que `let` est lazy et ne sera instancié que la première fois que la variable est appelée tandis que `let!` instancie la variable avant le test. C'est particulièrement pratique quand les `let!` instancie des objets en database.
+
+#### before
+
+`before` permet de définir un block qui sera exécuté avant chaque test. Par exemple:
+```ruby
+before do
+  Turtle.create(name: 'silvie', color: 'green')
+end
+
+it "has one turtle in db" do
+  expect(Turtle.count).to eq(1)
+end
+```
+
+#### subject
+
+C'est un peu comme un `let` ça permet de définir le "sujet" du test. On l'invoque plus tard dans son test en faisant `subject`
+```ruby
+subject do
+  get :index
+end
+
+it "has an array of turtles" do
+  subject
+  expect(JSON.parse(response.body)).to be_a(Array)
+end
+```
+
+### Le fichier .rspec
+
+Le fichier .rspec contient les options par défaut qu'on veut donner a rspec. Dans turtle_family:
+
+```sh
+--require spec_helper
+--require rails_helper
+--format NyanCatFormatter
+```
+
+### Faire des helpers
+
+Avant le premier helper:
+
+* On crée le dossier `spec/support`
+* On ajoute cette ligne dans `spec/rails_helper.rb`:
+```
+Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
+```
+
+Ensuite:
+
+* On crée un module dans le dossier `spec/support`. Par exemple:
+```ruby
+module JsonHelper
+  def json_response
+    if (json = JSON.parse(response.body)).is_a?(Array)
+      json.map!(&:with_indifferent_access)
+    else
+      json.with_indifferent_access
+    end
+  end
+end
+```
+* On modifie le `spec/rails_helper.rb` en ajoutant:
+```ruby
+  config.include JsonHelper
+```
+
+Après ça toutes les méthode du module sont disponible partout dans les tests. Pour reprendre l'exemple plus haut:
+```ruby
+subject do
+  get :index
+end
+
+it "has an array of turtles" do
+  subject
+  expect(json_response).to be_a(Array)
+end
+```
+
+## FactoryBot
+
+FactoryBot est une gem pour nous aider à définir des factories qui permettent de générer des objets en DB dans nos tests.
+
+On l'installe en ajoutant dans `spec/rails_helper` dans le block de configuration:
+```ruby
+config.include FactoryBot::Syntax::Methods
+```
+
+Les factories sont définies dans `spec/factories` et ressemblent à:
+```ruby
+FactoryBot.define do
+  factory :turtle do
+    name { Faker::OnePiece.character }
+    color { %w(blue green pink yellow).sample }
+  end
+end
+```
+
+On les invoque plus tard dans nos tests de cette façon:
+```ruby
+# créer une tortue en db.
+create(:turtle)
+
+# créer une tortue en db en spécifiant certains de ses attributs
+create(:turtle, name: 'Léonardo')
+
+# créer plusieurs instances (12 ici)
+create_list(:turtle, 12)
+```
+## ShouldaMatchers
+
+Permet de tester les validation des modèles (entre autre).
+
+On l'installe en ajoutant à la fin du `spec/rails_helper`
+```ruby
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    # Choose a test framework:
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+```
+
+Par exemple si le modèle défini une validation de présence:
+```ruby
+validates :name, presence: true
+```
+
+on la test de cette façon:
+```ruby
+it { should validate_presence_of(:name) }
+```
+
+La liste des helpers de tests se trouve ici: https://github.com/thoughtbot/shoulda-matchers
+
+## Faker
+
+Permet de générer des objets de test. La liste des objets peut être trouvé ici: https://github.com/stympy/faker
+
+Par exemple: 
+```ruby
+Faker::StarWars.character
+```
+
+## ActiveModelSerializer
+
+Permet de ne gérer notre format de retour qu'à un endroit (dans les serializers).
+
+Par défaut le format de retour est un peu simple et ne permet pas de retour des informations de type pagination par exemple.
+
+On la configure en ajoutant un initializer (`config/initializers/active_model_serializer.rb`) avec:
+```ruby
+ActiveModelSerializers.config.adapter = :json # :json_api marche aussi mais est un peu plus complexe a utiliser
+```
+
+on peut ensuite définir des serializer dans `app/serializers` de cette façon:
+```ruby
+class TurtleSerializer < ActiveModel::Serializer
+  attributes :id, :name, :color
+end
+```
+
+Ensuite, tous nos `render json: my_turtle` utiliseront par défaut le bon serializer (c'est un objet de classe `Turtle` donc il va utiliser le `TurtleSerializer`).
+
+## Conclusion
+
+Avec ces outils vous pouvez déjà facilement créer des API simples et plutôt propres. Toutes ces librairies de test vous seront utile dans n'importe quel projet rails/ruby :)

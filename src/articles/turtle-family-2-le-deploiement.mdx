@@ -1,0 +1,335 @@
+---
+type: post
+title: "Turtle family 2: Le deploiement"
+date: 2018-03-09T09:12:00
+comments: true
+categories: 
+  - THP
+  - code
+  - deploiement
+  - scratch
+---
+On déploie les tortues automatiquement en leur faisant passer a travers un process qualité avant (CI/CD)
+
+<!-- more -->
+
+{{< youtube RdePfF8IvNg >}}
+
+Voilà le code produit à la fin de la vidéo: https://github.com/denispasin/turtle_family/tree/end_session_2
+
+Security: Tous les tokens ont été changé ;)
+
+Dans cette vidéo on a mis en place un processus de de test et de déploiement continu autour de notre app.
+
+À la fin de la vidéo on a:
+
+* une app qui est testée avant chaque déploiement;
+* plusieurs environements pour tester notre application;
+* des logs qui vont populer un service fait pour les analyser;
+* nos bugs en production sont envoyés dans un service pour les consolider et permettre de les traiter;
+* les performances de l'app sont analysées en temps réel pour nous permettre de l'améliorer.
+
+Tout cela se produit automatiquement sans que nous ayons a faire quoi que ce soit ensuite.
+
+Le maitre mot ici est: Si on doit faire des opérations manuelles c'est qu'on a échoué quelque part. Tout ceci coute la modique somme de 0€ mais pourra scale si jamais le besoin s'en fait sentir.
+
+## Les outils qu'on a utilisé:
+
+#### Pour les tests
+
+* Rspec: que vous connaissez déjà.
+* rubocop: Qu'on avait déjà ajouté, mais on a vu avec un peu plus de détail sa configuration.
+* [husky](https://github.com/typicode/husky): Pour faire tourner nos tests avant chaque commit et l'empêcher si ça passe pas.
+* [simplecov](https://github.com/colszowka/simplecov): Pour calculer la couverture de nos tests et ajouter une barre minimum de tests sous laquelle ne pas passer.
+
+#### Pour automatiser notre processus de test
+
+* [CircleCI](https://circleci.com/): Permet de construire un environment de test a chaque commit. Le status du test est automatiquement reporté dans Github et peut servir à bloquer le merge d'une pull-request. Des notifications peuvent aussi être envoyées dans Slack ou par email.
+
+#### Pour automatiser notre processus de deploiement
+
+* [Heroku](https://heroku.com): On a utilisé des "pipeline" pour avoir un ensemble d'environnements basé autour d'un repo github. 
+
+#### Autres outils pour rendre notre app un peu plus solide
+
+* [lograge](https://github.com/roidrage/lograge): Quelqu'un a ragé contre le format par defaut des logs de rails. Ça a donné log-rage…
+* [logstash](https://github.com/dwbutler/logstash-logger) (et confrères): Un format de log en json pour nous permettre de parser nos logs automatiquement.
+* [rack-timeout](https://github.com/heroku/rack-timeout): Pour tuer les requêtes trop longues.
+* [LogDNA](https://logdna.com/): Une app pour stocker les logs et pouvoir chercher dedans.
+* [Rollbar](https://rollbar.com): Une app pour attraper toutes nos erreurs et les rassembler en un seul point (note: Sentry c'est bien aussi).
+* [Skylight](https://www.skylight.io/): Pour faire de l'analyse de performance de chacune des appels que l'on reçoit.
+
+## Process de mise en place
+
+Je ne décrirai pas rspec, ça a déjà été fait [précédement](https://www.zaratan.fr/blog/2018/03/02/turtle-family-1/).
+
+#### Rubocop
+
+Après avoir ajouté la gem dans notre Gemfile on le configure en éditant le fichier `.rubocop.yml`.
+
+La config de turtle-app ressemble à: 
+
+```yaml
+inherit_from:
+  - http://relaxed.ruby.style/rubocop.yml
+
+AllCops:
+  DisplayStyleGuide: true
+  DisplayCopNames: true
+  Exclude:
+    - 'db/schema.rb'
+    - 'vendor/**/*'
+    - 'config/environments/*.rb'
+    - 'bin/*'
+
+Rails:
+  Enabled: True
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'Guardfile'
+    - 'vendor/bundle'
+```
+
+Ce qu'il est important de noté ici est le: `inherit_from` on ne part pas des règles de base de rubocop (qui sont très contraignantes) mais d'une version allégée.
+
+Le `Rails` permet d'activer les règles propres a rails.
+
+Rubocop se lance en tant dans son invite de commande: `rubocop`. Il existe aussi un mode de correction automatique d'erreurs facile (genre l'indentation ou les espace après les `{`) en faisant: `rubocop -a`.
+
+#### Husky
+
+Husky permet d'ajouter des règles de choses à faire avant (ou après) les commit ou les push. C'est une librairie javascript donc on va l'installer un peu différemment.
+
+En général en javascript pour gerer mes packages j'aime bien utiliser Yarn: https://yarnpkg.com/fr/ .
+
+On installe donc la libraire de cette façon:
+
+```bash
+yarn add -D husky
+```
+
+J'ai ajouté ici le `-D` que j'ai oublié dans la vidéo qui indique que la librairie n'est nécessaire qu'en développement et pas en prod.
+
+Ensuite on le configure en éditant son fichier `package.json` et en ajoutant dedans:
+```json
+"scripts": {
+  "precommit": "rspec --format progress && rubocop"
+}
+```
+
+Avant chaque commit, roule rspec et rubocop. Si jamais un des deux échoue, le commit sera empêché.
+
+#### SimpleCov
+
+SimpleCov permet de mesurer la couverture de test de l'application, c'est à dire sur quelles lignes de l'app les tests sont passés et plus important sur quelles lignes ils ne sont pas passés.
+
+Il faut voir la couverture de test comme un pourcentage de confiance maximal qu'on peut avoir en une application.
+Si ma couverture est de 85%. Je sais que au mieux je peux faire confiance à 85% de mon app, le reste n'étant pas testé, mais si ça se trouve mes tests sont mal faits et ne testent pas grand chose donc en réalité mon app est pas très sure.
+
+Pour installer SimpleCov, après avoir ajouté la gem au groupe de test. On ajoute dans son `spec/rails_helper.rb` (la doc de la gem conseille de le mettre au début du fichier) les lignes suivantes:
+```ruby
+require 'simplecov'
+
+SimpleCov.start 'rails' do
+  add_filter do |source_file|
+    source_file.lines.count < 5
+  end
+end
+```
+
+Cela va permettre de créer a chaque fois que les tests tournent un dossier `coverage` contenant un fichier `index.html` représentant notre couverture de tests. Il est Vivement conseillé d'ajouter se dossier à notre gitignore pour ne pas l'envoyer dans git:
+```bash
+echo "coverage" >> .gitignore
+```
+
+Ensuite, pour nous forcer à tester notre app, on peut configurer une couverture minimale de tests (toujours dans `rails_helper.rb`):
+```ruby
+SimpleCov.at_exit do
+  SimpleCov.result.format! # obligatoire
+  SimpleCov.minimum_coverage 90 # La couverture de tests globale doit être de 90%.
+  SimpleCov.minimum_coverage_by_file 80 # Chaque fichier ne peut pas avoir moins de 80% de couverture.
+  SimpleCov.maximum_coverage_drop 5 # La couverture de chaque fichier et globale ne peut pas chuter de plus de 5%.
+end
+```
+
+Enfin, en prévision de CircleCi on ajoute ces lignes là qui lui permettent de récupérer les fichiers de coverage:
+```ruby
+if ENV['CIRCLE_ARTIFACTS']
+  dir = File.join(ENV['CIRCLE_ARTIFACTS'], "coverage")
+  SimpleCov.coverage_dir(dir)
+end
+```
+
+#### CircleCI
+On ajoute le projet aux projets surveillés par CircleCi (CF vidéo) puis on crée le fichier `.circleci/config.yml`.
+
+Le mien est configuré comme suit et permet de définir les différentes étapes du build:
+```yaml
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: circleci/ruby:2.4.3-node
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle-test_test
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+        
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # Database setup
+      - run: bundle exec rails db:create db:migrate
+
+      - run:
+          name: run linting
+          command: |
+            bundle exec rubocop
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            bundle exec rspec --format progress \
+                            --format RspecJunitFormatter \
+                            --out /tmp/test-results/rspec.xml \
+                            --format progress
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+      - store_artifacts:
+          path: ~/app/coverage
+          destination: coverage-results
+```
+
+Il est conseillé de faire fonctionner un build complètement avant de passer à la tache suivante :)
+
+#### Heroku
+
+Ce bout là étant majoritairement visuel la vidéo (commencez à 28min) est probablement la meilleure façon.
+
+Les points à faire:
+
+* Créer une app de staging et activer le déploiement automatique de la branche master dessus.
+* Créer un pipeline de déploiement et ajouter l'app de staging au pipeline dans la partie… staging :D
+* Créer une app de production et l'ajouter a production.
+* Activer les review app pour les branches de PR.
+
+Pour le Procfile j'ai utilisé une étape de release qui permettra de rouler automatiquement les migrations a chaque déploiement (ne pas avoir à le faire à la main ça évite de l'oublier):
+```
+web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development}
+release: bundle exec rails db:migrate
+```
+
+#### Les logs
+
+Pour avoir de beaux logs de production en json ajouter ces trois gem au groupe de production:
+```ruby
+gem 'lograge'
+gem "logstash-event"
+gem 'logstash-logger'
+```
+
+Puis, ça a `config/environments/production.rb` :
+```ruby
+config.lograge.enabled = true
+config.lograge.formatter = Lograge::Formatters::Logstash.new
+config.lograge.base_controller_class = 'ActionController::API'
+config.lograge.logger = ActiveSupport::Logger.new(STDOUT)
+config.lograge.custom_options = lambda do |event|
+  {
+    tags: [event.payload[:headers]["action_dispatch.request_id"]],
+    params: event.payload[:params],
+  }
+end
+
+config.logger = LogStashLogger.new(type: :stdout)
+```
+
+Dans `production.rb` penser a passer le niveau de logs à info pour ne pas saturer LogDNA:
+
+```ruby
+config.log_level = :info
+```
+
+Et a supprimer les lignes par défaut concernant les logs (voir vidéo).
+
+#### rack-timeout
+Ajouter la gem suffit à mettre un timeout sur toutes les requêtes à 25sec.
+
+On ajoute aussi ça dans `config/environments/production.rb` pour log correctement les timeouts:
+```ruby
+Rack::Timeout::StateChangeLoggingObserver::STATE_LOG_LEVEL[:ready] = :debug
+Rack::Timeout::StateChangeLoggingObserver::STATE_LOG_LEVEL[:completed] = :debug
+Rack::Timeout::Logger.logger = config.logger
+```
+
+#### LogDNA
+
+Il suffit d'ajouter l'addon dans Heroku.
+
+#### Rollbar
+
+On ajoute l'addon dans Heroku puis ces gems au groupe production:
+```
+gem 'oj', '~> 2.16.1'
+gem 'rollbar'
+```
+
+Et enfin, on configure Rollbar pour ne se lancer qu'en production et prendre sa clé depuis les variables d'environment d'Heroku
+```ruby
+if Rails.env.production?
+  Rollbar.configure do |config|
+    config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+    config.environment = ENV['ROLLBAR_ENV'].presence || Rails.env
+  end
+end
+```
+
+#### Skylight
+
+On ajoute la gem dans le Gemfile (dans le groupe production), puis on ajoute la variable d'environment qui nous est fournie sur le site dans les variable d'env d'Heroku.
+
+## Conclusion
+
+Normalement vous devriez avoir un pipeline de déploiment globalement automatisé et plutôt robuste après tout ça. En espérant que ça vous a plu :)

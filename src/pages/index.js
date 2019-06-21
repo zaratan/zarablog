@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import { Link, useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
+import slugify from 'slugify';
 
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 
@@ -77,7 +80,8 @@ TitleHtml.propTypes = {
 
 const IndentSpan = styled.span`
   color: ${props => props.theme.base1};
-  margin-left: 20px;
+  padding-left: 20px;
+  min-width: 350px;
   @media only screen and (max-width: ${props =>
       props.isProfileOpen ? '1100px' : '700px'}) {
     display: block;
@@ -95,7 +99,7 @@ const ContentSpan = styled.span`
   @media only screen and (max-width: ${props =>
       props.isProfileOpen ? '1100px' : '700px'}) {
     display: block;
-    margin-left: 20px;
+    padding-left: 20px;
   }
 `;
 
@@ -118,26 +122,53 @@ const TitleItem = styled(Link)`
   }
   font-family: Inconsolata;
   @media only screen and (max-width: ${props =>
-      props.isProfileOpen ? `1300px` : `900px`}) {
+      props.isProfileOpen ? `1310px` : `910px`}) {
     flex-direction: column;
   }
 `;
 
-const Index = ({ isProfileOpen }) => (
-  <>
-    <SEO title="Home" />
-    <TitleList>
-      <li>
-        <TitleItem to="/" isProfileOpen={isProfileOpen}>
-          <DateHtml isProfileOpen={isProfileOpen}>03 Fev 2019</DateHtml>
-          <TitleHtml isProfileOpen={isProfileOpen}>
-            Réduire ses controlleurs et modèles
-          </TitleHtml>
-        </TitleItem>
-      </li>
-    </TitleList>
-  </>
-);
+const Index = ({ isProfileOpen }) => {
+  const { nodes } = useStaticQuery(graphql`
+    {
+      allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+        nodes {
+          frontmatter {
+            title
+            date
+          }
+          id
+        }
+      }
+    }
+  `).allMdx;
+
+  console.log({ nodes });
+
+  return (
+    <>
+      <SEO title="Home" />
+      <TitleList>
+        {nodes.map(({ frontmatter, id }) => (
+          <li key={id}>
+            <TitleItem
+              to={slugify(frontmatter.title.toLowerCase())}
+              isProfileOpen={isProfileOpen}
+            >
+              <DateHtml isProfileOpen={isProfileOpen}>
+                {format(new Date(frontmatter.date), 'd MMM yyyy', {
+                  locale: fr,
+                })}
+              </DateHtml>
+              <TitleHtml isProfileOpen={isProfileOpen}>
+                {frontmatter.title}
+              </TitleHtml>
+            </TitleItem>
+          </li>
+        ))}
+      </TitleList>
+    </>
+  );
+};
 
 Index.propTypes = {
   isProfileOpen: PropTypes.bool,

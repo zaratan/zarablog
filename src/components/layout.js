@@ -74,11 +74,17 @@ const Footer = styled.footer`
 
 const AsideProfile = styled.aside`
   display: ${props => (props.profileOpen ? `block` : `none`)};
-  min-width: 400px;
 
   @media only screen and (min-width: 700px) {
     width: 400px;
+    min-width: 400px;
     border-left: 1px solid ${props => props.theme.yellow};
+  }
+  @media only screen and (max-width: 800px) {
+    min-width: 300px;
+  }
+  @media only screen and (max-width: 700px) {
+    min-width: 100px;
   }
 `;
 

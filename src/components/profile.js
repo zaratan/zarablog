@@ -19,7 +19,6 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   padding: 0 10px;
   height: 100%;
-  justify-content: space-between;
   font-family: Inconsolata;
 `;
 
@@ -38,8 +37,6 @@ const Profile = () => {
       }
     }
   `).dataJson;
-
-  console.log(data);
 
   return (
     <ProfileContainer>
