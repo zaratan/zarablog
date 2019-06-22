@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 
@@ -11,21 +11,36 @@ const defaultContext = {
 };
 
 const ThemeContext = createContext({ dark: true });
+
+const getTheme = (setTheme, isDark) =>
+  setTheme(Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme));
+
 export const ThemeProvider = ({ children }) => {
   const [isDark, setDark] = useState(defaultContext.isDark);
+  const [theme, setTheme] = useState(baseTheme);
+
   const toggleDark = () => {
-    setDark(!isDark);
+    const nextDark = !isDark;
+    console.log({ nextDark, isDark });
+    localStorage.setItem('ThemeContext:isDark', JSON.stringify(nextDark));
+    setDark(nextDark);
+    getTheme(setTheme, nextDark);
   };
 
-  const getTheme = () =>
-    Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme);
+  useEffect(() => {
+    const lsDark = JSON.parse(localStorage.getItem('ThemeContext:isDark'));
+    if (lsDark) {
+      setDark(lsDark);
+      getTheme(setTheme, lsDark);
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider
       value={{
         isDark,
         toggleDark,
-        getTheme,
+        theme,
       }}
     >
       {children}

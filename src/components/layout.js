@@ -90,10 +90,8 @@ const AsideProfile = styled.aside`
 `;
 
 const Layout = ({ children }) => {
-  const { getTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { isProfileOpen } = useContext(LayoutContext);
-
-  const theme = getTheme();
 
   return (
     <StaticQuery
