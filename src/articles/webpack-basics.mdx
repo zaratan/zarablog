@@ -3,7 +3,7 @@ type: post
 title: "Webpack basics"
 date: 2018-03-30T15:48:00
 comments: true
-categories: 
+categories:
   - THP
   - front
   - écosystème JS
@@ -27,16 +27,19 @@ Dans cette étape on fait en sorte que Webpack (outil de build) utilise Babel (o
 ### Étapes a suivre
 
 #### Ajout de package.json:
+
 ```bash
 yarn init # Répondre aux questions
 ```
 
 #### Ajout de webpack
+
 ```bash
 yarn add -D webpack webpack-cli
 ```
 
 #### Ajout de babel
+
 ```bash
 yarn add -D @babel/cli # Permet de lancer des commandes comme babel fichier_en_nouveau.js
 yarn add -D @babel/core # Cœur de la librairie Babel
@@ -44,6 +47,7 @@ yarn add -D @babel/preset-env # Module babel qui gère la transformation ES2015 
 ```
 
 #### Ajout du loader babel pour webpack
+
 ```bash
 yarn add -D babel-loader
 ```
@@ -51,17 +55,17 @@ yarn add -D babel-loader
 #### On écrit le fichier webpack.common.babel.js
 
 ```js
-import path from 'path'
+import path from "path";
 
 export default {
   // Nom de l'app (pas utile)
-  name: 'app',
+  name: "app",
   // Fichier de départ
-  entry: './src/index.js',
+  entry: "./src/index.js",
   // Fichier d'arrivée
   output: {
-    filename: 'index.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist")
   },
   // module que webpack doit utiliser
   module: {
@@ -69,14 +73,15 @@ export default {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: "babel-loader"
       }
     ]
   }
-}
+};
 ```
 
 #### On édite le .babelrc pour configurer notre babel
+
 ```json
 {
   "presets": ["@babel/preset-env"]
@@ -84,11 +89,13 @@ export default {
 ```
 
 #### On ajoute browserslist dans le package.json
+
 ```json
 "browserslist": [
   "> 1%"
 ],
 ```
+
 Cette config nous permet de dire a babel quel niveau de compatibilité il doit rechercher.
 Ici: Toutes les versions de navigateurs qui sont utilisées par plus de 1% de la population.
 
@@ -136,16 +143,19 @@ On importe nos librairies depuis le js plutôt que les inclure alamain dans le h
 ### Étapes
 
 #### Ajouter les librairies
+
 ```bash
 yarn add lodash
 yarn add jquery
 ```
 
 #### Importer les librairies
+
 {{< filename "index.js" >}}
+
 ```js index.js
-import _ from 'lodash'
-import $ from 'jquery'
+import _ from "lodash";
+import $ from "jquery";
 ```
 
 #### Les supprimer du html
@@ -156,12 +166,14 @@ Tout marche, on peut recharger notre page et le JS marche encore :)
 
 Plutôt qu'utiliser un `--watch` qui recompile tout. On va passer par un "server".
 Ça a deux avantages:
+
 - La page est rechargée automatiquement dans notre navigateur a chaque changement;
 - On peut mettre des breakpoint et debug directement dans le JS moderne.
 
 ### Étapes
 
 #### Ajouter la librairie
+
 ```bash
 yarn add -D webpack-dev-server
 ```
@@ -171,6 +183,7 @@ yarn add -D webpack-dev-server
 On ajoute une section devServer dans `webpack.common.babel.js` indiquant au server qu'il doit servir les fichiers se trouvant dans le dossier `dist`:
 
 {{< filename "webpack.config.babel.js" >}}
+
 ```js webpack.common.babel.js
 devServer: {
   contentBase: './dist',
@@ -182,6 +195,7 @@ devServer: {
 On remplace les scripts précédents par ceux ci:
 
 {{< filename "package.json" >}}
+
 ```json package.json
 "scripts": {
   "dev:babel": "babel webpack.common.babel.js > webpack.common.js",
@@ -208,40 +222,42 @@ Avoir un environnent de développent et un de production. En dev on veut un envi
 Pour séparer la prod et le dev on va faire deux nouveaux fichiers un pour chaque config (vous comprenez maintenant pourquoi l'autre s'appelait common ;) ).
 
 Dans webpack.dev.babel.js:
-```js webpack.dev.babel.js
-import merge from 'webpack-merge'
 
-import common from './webpack.common'
+```js webpack.dev.babel.js
+import merge from "webpack-merge";
+
+import common from "./webpack.common";
 
 const client = {
-  mode: 'development',
+  mode: "development",
   output: {
-    filename: 'js/index.js',
+    filename: "js/index.js"
   },
-  devtool: 'inline-source-map',
+  devtool: "inline-source-map",
   devServer: {
-    contentBase: './dist',
-  },
-}
+    contentBase: "./dist"
+  }
+};
 
-export default merge(common, client)
+export default merge(common, client);
 ```
 
 Dans webpack.prod.babel.js:
-```js webpack.prod.babel.js
-import merge from 'webpack-merge'
 
-import common from './webpack.common'
+```js webpack.prod.babel.js
+import merge from "webpack-merge";
+
+import common from "./webpack.common";
 
 const client = {
-  mode: 'production',
+  mode: "production",
   output: {
-    filename: 'js/index.js',
+    filename: "js/index.js"
   },
-  devtool: 'source-map',
-}
+  devtool: "source-map"
+};
 
-export default merge(common, client)
+export default merge(common, client);
 ```
 
 La grande différence va être dans le Mode et dans le type de sourcemap. Les sourcesmap c'est ce qui vous sert a visualiser vos sources initiales dans chrome.
@@ -251,27 +267,28 @@ La grande différence va être dans le Mode et dans le type de sourcemap. Les so
 Dans le common on retire ce qui avait trait au dev:
 
 {{< filename "webpack.common.babel.js" >}}
+
 ```js webpack.common.babel.js
-import path from 'path'
+import path from "path";
 
 export default {
-  name: 'app',
+  name: "app",
   entry: {
-    main: './src/index.js',
+    main: "./src/index.js"
   },
   output: {
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
+        loader: "babel-loader"
+      }
     ]
-  },
-}
+  }
+};
 ```
 
 #### On ajoute webpack-merge
@@ -327,6 +344,7 @@ yarn add -D html-loader
 Puis on ajoute dans les règles:
 
 {{< filename "webpack.common.babel.js" >}}
+
 ```js webpack.common.babel.js
 {
   test: /\.(html)$/,
@@ -345,6 +363,7 @@ yarn add -D url-loader file-loader
 Puis, dans les règles:
 
 {{< filename "webpack.common.babel.js" >}}
+
 ```js webpack.common.babel.js
 {
   test: /\.(png|gif|woff|woff2|eot|ttf|svg)$/,
@@ -366,6 +385,7 @@ yarn add -D style-loader css-loader
 Puis dans les règles:
 
 {{< filename "webpack.common.babel.js" >}}
+
 ```js webpack.common.babel.js
 {
   test: /\.css$/,
@@ -379,6 +399,7 @@ Puis dans les règles:
 ```
 
 #### Ajouter le plugin pour injecter dans le html
+
 ```bash
 yarn add -D html-webpack-plugin
 ```
@@ -386,10 +407,11 @@ yarn add -D html-webpack-plugin
 Puis on modifie le fichier common de webpack:
 
 On importe en haut du fichier:
+
 ```js
-import webpack from 'webpack'
-import CleanWebpackPlugin from 'clean-webpack-plugin'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from "webpack";
+import CleanWebpackPlugin from "clean-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 ```
 
 Puis on ajoute une section plugins:
@@ -409,7 +431,7 @@ plugins: [
 Pour que le css soit pris en compte par webpack il faut que celui-ci soit referencé dans le fichier js… On ajoute donc dans `index.js`:
 
 ```js
-import './index.css'
+import "./index.css";
 ```
 
 #### On extrait le css du bundle js
@@ -417,14 +439,15 @@ import './index.css'
 L'étape précédente a ajouté le css a l'interieur du fichier js généré. On va donc le ré-extraire dans un fichier css à part (**RANT** SERIOUSLY JS?)
 
 ```bash
-yarn add -D extract-text-webpack-plugin@next 
+yarn add -D extract-text-webpack-plugin@next
 ```
 
 On prend la version beta parce que sinon ça ne marche pas avec la version courante de webpack…
 
 On l'inclus en haut du common:
+
 ```js
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import ExtractTextPlugin from "extract-text-webpack-plugin";
 ```
 
 puis on l'utilise pour indiquer quel fichier devra être extrait:
@@ -434,26 +457,29 @@ La ligne `use: ExtractTextPlugin.extract(` plus haut.
 Ensuite, on indique dans le dev et le prod comment nommer le fichier css:
 
 En dev:
+
 ```js
 plugins: [
   new ExtractTextPlugin({
-    filename: 'css/styles.css',
+    filename: "css/styles.css",
     allChunks: true
-  }),
-]
+  })
+];
 ```
 
 En prod:
+
 ```js
 plugins: [
   new ExtractTextPlugin({
-    filename: '/css/styles.[hash].css', // [hash] ajoute le hashcode du fichier dans le nom. A chaque changement du contenu de celui-ci le cache sera donc rafraichi.
+    filename: "/css/styles.[hash].css", // [hash] ajoute le hashcode du fichier dans le nom. A chaque changement du contenu de celui-ci le cache sera donc rafraichi.
     allChunks: true
-  }),
-]
+  })
+];
 ```
 
 #### On clean le dossier dist automatiquement a chaque fois
+
 ```bash
 yarn add -D clean-webpack-plugin
 ```
@@ -461,9 +487,11 @@ yarn add -D clean-webpack-plugin
 Ça va vider le dossier `dist` entre chaque build. Les deux lignes nécessaires ont déjà été ajoutées dans des étapes précédentes.
 
 #### On update les noms généré de chaque fichiers
+
 On va ajouter le hashcode dans le nom des fichiers js aussi:
 
 En dev:
+
 ```js
 output: {
   filename: 'js/[name].js',
@@ -471,13 +499,14 @@ output: {
 ```
 
 En prod:
+
 ```js
 output: {
   filename: 'js/[name].[chunkhash].js',
 },
 ```
 
-#### On enlève le <link> du html
+#### On enlève le `<link>` du html
 
 Il ne nous reste "plus qu'a" retirer le link du haut du fichier `src/index.html` puisse que celui-ci sera injecté automatiquement par webpack
 
@@ -492,6 +521,7 @@ On va ajouter un preprocesseur de [sass](https://sass-lang.com/) directement dan
 #### Modifier le css
 
 On change `src/index.css` en `src/index.scss` et son contenu en:
+
 ```scss
 $blue: #4b62f9;
 $grey: #eaeaea;
@@ -512,11 +542,13 @@ h1 {
 ```
 
 #### Ajouter le loader
+
 ```bash
-yarn add -D sass-loader node-sass 
+yarn add -D sass-loader node-sass
 ```
 
 Puis on modifie le common avec une règle différente pour le scss:
+
 ```js
 {
   test: /\.scss$/,
@@ -529,7 +561,7 @@ Puis on modifie le common avec une règle différente pour le scss:
         minimize: true,
         sourceMap: true
       }
-    }, 
+    },
       {
         loader: 'sass-loader',
         options: {
@@ -543,13 +575,15 @@ Puis on modifie le common avec une règle différente pour le scss:
 #### On change l'import dans le js
 
 Ne pas oublier de changer le nom du fichier dans `index.js`
+
 ```js
-import './index.scss'
+import "./index.scss";
 ```
 
 Voilà, votre fichier sass sera automatiquement compilé en css par webpack.
 
 ## Step 7: On divise le js en deux
+
 Comme on met toutes les librairies dans le `index.js` généré, a chaque petit changement de ce dernier son hash change et donc l'utilisateur doit retélécharger toutes les librairies. C'est pas vraiment une bonne idée. On va donc le diviser en deux un avec notre code et un avec les librairies.
 
 ### Étapes
@@ -557,6 +591,7 @@ Comme on met toutes les librairies dans le `index.js` généré, a chaque petit 
 #### On ajoute une section dans common
 
 Dans le fichier common, on ajoute une section optimization:
+
 ```js
 optimization: {
   splitChunks: {
@@ -574,22 +609,29 @@ optimization: {
 Qui indique: tout ce qui se trouve dans `node_modules` vas dans le fichier `vendor`.
 
 Voilà a chaque changement dans votre code, l'utilisateur ne retélécharge pas toutes les libs :)
+
 ## Step 8: On génère un manifest.json
+
 Pour utiliser les sourcemap en production et pour aider au referencement (si je ne m'abuse) on veut générer un `manifest.json`
 
 ### Étapes
 
 #### On ajoute la librairie
+
 ```bash
 yarn add -D webpack-manifest-plugin
 ```
+
 #### On modifie le common
+
 On import le plugin en tête du fichier:
+
 ```js
-import ManifestPlugin from 'webpack-manifest-plugin'
+import ManifestPlugin from "webpack-manifest-plugin";
 ```
 
 Puis on le configure dans les plugins:
+
 ```js
 new ManifestPlugin({
   seed: {
@@ -601,11 +643,13 @@ new ManifestPlugin({
   }
 }),
 ```
+
 #### On l'ajoute en haut du fichier html
+
 On l'ajoute dans le head de `src/index.html`
 
 ```html
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/manifest.json" />
 ```
 
 Voilà, vos sourceMaps sont disponibles en production :)
