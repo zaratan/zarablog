@@ -7,7 +7,7 @@ const defaultContext = {
   toggleDark: () => {
     this.isDark = !this.isDark;
   },
-  getTheme: () => baseTheme,
+  getTheme: () => {},
 };
 
 const ThemeContext = createContext({ dark: true });
@@ -15,9 +15,11 @@ const ThemeContext = createContext({ dark: true });
 const getTheme = (setTheme, isDark) =>
   setTheme(Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme));
 
+export const defaultTheme = () => Object.assign({}, baseTheme, darkTheme);
+
 export const ThemeProvider = ({ children }) => {
   const [isDark, setDark] = useState(defaultContext.isDark);
-  const [theme, setTheme] = useState(baseTheme);
+  const [theme, setTheme] = useState({});
 
   const toggleDark = () => {
     const nextDark = !isDark;

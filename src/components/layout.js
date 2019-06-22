@@ -28,7 +28,7 @@ import {
 import Header from './header';
 import GlobalStyle from '../styles/GlobalStyle';
 import Profile from './profile';
-import ThemeContext from '../contexts/ThemeContext';
+import ThemeContext, { defaultTheme } from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
 
 [
@@ -105,7 +105,7 @@ const Layout = ({ children }) => {
         }
       `}
       render={data => (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme || defaultTheme}>
           <>
             <GlobalStyle />
             <Header siteTitle={data.site.siteMetadata.title} />
