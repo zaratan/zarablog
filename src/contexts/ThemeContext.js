@@ -2,20 +2,19 @@ import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 
+export const defaultTheme = Object.assign({}, baseTheme, darkTheme);
 const defaultContext = {
   isDark: true,
   toggleDark: () => {
     this.isDark = !this.isDark;
   },
-  getTheme: () => {},
+  theme: defaultTheme,
 };
 
 const ThemeContext = createContext({ dark: true });
 
 const getTheme = (setTheme, isDark) =>
   setTheme(Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme));
-
-export const defaultTheme = () => Object.assign({}, baseTheme, darkTheme);
 
 export const ThemeProvider = ({ children }) => {
   const [isDark, setDark] = useState(defaultContext.isDark);

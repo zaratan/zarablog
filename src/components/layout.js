@@ -90,9 +90,11 @@ const AsideProfile = styled.aside`
 `;
 
 const Layout = ({ children }) => {
-  const { theme } = useContext(ThemeContext);
+  let { theme } = useContext(ThemeContext);
   const { isProfileOpen } = useContext(LayoutContext);
-
+  if (!theme || !theme.base2) {
+    theme = defaultTheme;
+  }
   return (
     <StaticQuery
       query={graphql`
@@ -105,7 +107,7 @@ const Layout = ({ children }) => {
         }
       `}
       render={data => (
-        <ThemeProvider theme={theme || defaultTheme}>
+        <ThemeProvider theme={theme}>
           <>
             <GlobalStyle />
             <Header siteTitle={data.site.siteMetadata.title} />
