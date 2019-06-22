@@ -1,8 +1,10 @@
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ThemeContext from '../contexts/ThemeContext';
+import LayoutContext from '../contexts/LayoutContext';
 
 const SiteTitle = styled.h1`
   font-size: 24px;
@@ -136,21 +138,17 @@ const EmptyRight = styled.span`
   }
 `;
 
-const Header = ({
-  siteTitle,
-  setIsDark,
-  isDark,
-  setProfileOpen,
-  isProfileOpen,
-}) => {
+const Header = ({ siteTitle }) => {
+  const { isDark, toggleDark } = useContext(ThemeContext);
+  const { toggleProfileOpen } = useContext(LayoutContext);
   const actOnLightButton = event => {
     if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
-    setIsDark(!isDark);
+    toggleDark();
   };
 
   const actOnProfileButton = event => {
     if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
-    setProfileOpen(!isProfileOpen);
+    toggleProfileOpen();
   };
 
   return (
@@ -190,10 +188,6 @@ const Header = ({
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
-  setIsDark: PropTypes.func.isRequired,
-  isDark: PropTypes.bool.isRequired,
-  setProfileOpen: PropTypes.func.isRequired,
-  isProfileOpen: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {

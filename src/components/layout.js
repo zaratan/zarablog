@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/static-query/
  */
 
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { StaticQuery, graphql } from 'gatsby';
 import styled, { ThemeProvider } from 'styled-components';
@@ -26,9 +26,10 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 
 import Header from './header';
-import baseTheme, { lightTheme, darkTheme } from '../styles/BaseTheme';
 import GlobalStyle from '../styles/GlobalStyle';
 import Profile from './profile';
+import ThemeContext from '../contexts/ThemeContext';
+import LayoutContext from '../contexts/LayoutContext';
 
 [
   faHome,
@@ -89,13 +90,10 @@ const AsideProfile = styled.aside`
 `;
 
 const Layout = ({ children }) => {
-  const [isDark, setIsDark] = useState(true);
-  const [isProfileOpen, setProfileOpen] = useState(false);
+  const { getTheme } = useContext(ThemeContext);
+  const { isProfileOpen } = useContext(LayoutContext);
 
-  const theme = Object.assign({}, baseTheme, isDark ? darkTheme : lightTheme);
-  const childrenWithProps = React.Children.map(children, child =>
-    React.cloneElement(child, { isProfileOpen })
-  );
+  const theme = getTheme();
 
   return (
     <StaticQuery
@@ -112,15 +110,9 @@ const Layout = ({ children }) => {
         <ThemeProvider theme={theme}>
           <>
             <GlobalStyle />
-            <Header
-              siteTitle={data.site.siteMetadata.title}
-              setIsDark={setIsDark}
-              isDark={isDark}
-              setProfileOpen={setProfileOpen}
-              isProfileOpen={isProfileOpen}
-            />
+            <Header siteTitle={data.site.siteMetadata.title} />
             <MainWrapper>
-              <Main profileOpen={isProfileOpen}>{childrenWithProps}</Main>
+              <Main profileOpen={isProfileOpen}>{children}</Main>
               <AsideProfile profileOpen={isProfileOpen}>
                 <Profile />
               </AsideProfile>

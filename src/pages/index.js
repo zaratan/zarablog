@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import LayoutContext from '../contexts/LayoutContext';
 
 const Magenta = styled.span`
   color: ${props => props.theme.magenta};
@@ -21,61 +22,57 @@ const Yellow = styled.span`
   color: ${props => props.theme.yellow};
 `;
 
-const Tag = ({ children, type, tags, isProfileOpen }) => (
-  <IndentSpan isProfileOpen={isProfileOpen}>
-    <TagSpan isProfileOpen={isProfileOpen}>
-      {'<'}
-      <Magenta>{`${type}${tags.length > 0 ? ' ' : ''}`}</Magenta>
-      {tags.map(tag => {
-        const [k, v] = tag;
-        return (
-          <span key={k}>
-            <Cyan>{k}</Cyan>=<Yellow>"{v}"</Yellow>
-          </span>
-        );
-      })}
-      {'>'}
-    </TagSpan>
-    <ContentSpan isProfileOpen={isProfileOpen}>{children}</ContentSpan>
-    <TagSpan isProfileOpen={isProfileOpen}>
-      {'</'}
-      <Magenta>{type}</Magenta>
-      {'>'}
-    </TagSpan>
-  </IndentSpan>
-);
+const Tag = ({ children, type, tags }) => {
+  const { isProfileOpen } = useContext(LayoutContext);
+  return (
+    <IndentSpan isProfileOpen={isProfileOpen}>
+      <TagSpan isProfileOpen={isProfileOpen}>
+        {'<'}
+        <Magenta>{`${type}${tags.length > 0 ? ' ' : ''}`}</Magenta>
+        {tags.map(tag => {
+          const [k, v] = tag;
+          return (
+            <span key={k}>
+              <Cyan>{k}</Cyan>=<Yellow>"{v}"</Yellow>
+            </span>
+          );
+        })}
+        {'>'}
+      </TagSpan>
+      <ContentSpan isProfileOpen={isProfileOpen}>{children}</ContentSpan>
+      <TagSpan isProfileOpen={isProfileOpen}>
+        {'</'}
+        <Magenta>{type}</Magenta>
+        {'>'}
+      </TagSpan>
+    </IndentSpan>
+  );
+};
 
 Tag.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.string.isRequired,
   tags: PropTypes.array,
-  isProfileOpen: PropTypes.bool.isRequired,
 };
 
 Tag.defaultProps = {
   tags: [],
 };
 
-const DateHtml = ({ children, isProfileOpen }) => (
-  <Tag type="p" isProfileOpen={isProfileOpen} tags={[['class', 'date']]}>
+const DateHtml = ({ children }) => (
+  <Tag type="p" tags={[['class', 'date']]}>
     {children}
   </Tag>
 );
 
 DateHtml.propTypes = {
   children: PropTypes.node.isRequired,
-  isProfileOpen: PropTypes.bool.isRequired,
 };
 
-const TitleHtml = ({ children, isProfileOpen }) => (
-  <Tag type="title" isProfileOpen={isProfileOpen}>
-    {children}
-  </Tag>
-);
+const TitleHtml = ({ children }) => <Tag type="title">{children}</Tag>;
 
 TitleHtml.propTypes = {
   children: PropTypes.node.isRequired,
-  isProfileOpen: PropTypes.bool.isRequired,
 };
 
 const IndentSpan = styled.span`
@@ -127,7 +124,8 @@ const TitleItem = styled(Link)`
   }
 `;
 
-const Index = ({ isProfileOpen }) => {
+const Index = () => {
+  const { isProfileOpen } = useContext(LayoutContext);
   const { nodes } = useStaticQuery(graphql`
     {
       allMdx(sort: { fields: frontmatter___date, order: DESC }) {
@@ -168,14 +166,6 @@ const Index = ({ isProfileOpen }) => {
       </TitleList>
     </>
   );
-};
-
-Index.propTypes = {
-  isProfileOpen: PropTypes.bool,
-};
-
-Index.defaultProps = {
-  isProfileOpen: false,
 };
 
 const IndexPage = () => (
