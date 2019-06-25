@@ -24,6 +24,7 @@ import {
   faPatreon,
   faGithub,
 } from '@fortawesome/free-brands-svg-icons';
+import 'prismjs/themes/prism-solarizedlight.css';
 
 import Header from './header';
 import GlobalStyle from '../styles/GlobalStyle';

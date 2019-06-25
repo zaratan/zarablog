@@ -22,9 +22,12 @@
     "gatsby-plugin-sharp": "^2.2.1",
     "gatsby-plugin-styled-components": "^3.1.0",
     "gatsby-plugin-web-font-loader": "^1.0.4",
+    "gatsby-remark-prismjs": "^3.3.0",
     "gatsby-source-filesystem": "^2.1.0",
     "gatsby-transformer-json": "^2.2.0",
+    "gatsby-transformer-remark": "^2.5.0",
     "gatsby-transformer-sharp": "^2.2.0",
+    "prismjs": "^1.16.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-device-detect": "^1.6.2",
@@ -42,6 +45,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^1.6.1",
+    "gatsby-cli": "^2.7.2",
     "prettier": "^1.18.2"
   },
   "keywords": [
