@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isMobile } from 'react-device-detect';
 import ThemeContext from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
 
@@ -154,7 +155,11 @@ const Header = ({ siteTitle }) => {
   return (
     <HeaderStyle>
       <CircleContainer>
-        <CircleLink aria-label="home" to="/">
+        <CircleLink
+          aria-label="home"
+          to="/"
+          onClick={() => isMobile && console.log('lol') && toggleProfileOpen()}
+        >
           <RedCircle>
             <Icon icon="home" />
           </RedCircle>

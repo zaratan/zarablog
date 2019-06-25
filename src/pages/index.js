@@ -149,7 +149,7 @@ const Index = () => {
         {nodes.map(({ frontmatter, id }) => (
           <li key={id}>
             <TitleItem
-              to={slugify(frontmatter.title.toLowerCase())}
+              to={`/${slugify(frontmatter.title.toLowerCase())}`}
               isProfileOpen={isProfileOpen}
             >
               <DateHtml isProfileOpen={isProfileOpen}>

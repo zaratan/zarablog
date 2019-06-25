@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { BrowserView, MobileView, isMobile } from 'react-device-detect';
+import PropTypes from 'prop-types';
+
+import ProfileImage from './ProfileImage';
 
 const PictureContainer = styled.div`
   font-size: 5px;
@@ -12,6 +16,16 @@ const PictureContainer = styled.div`
   height: 200px;
   margin: 10px 0;
   background-color: black;
+  cursor: ${isMobile ? 'inherit' : 'pointer'};
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+  :hover {
+    opacity: 1;
+  }
+  :focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
 
 const ProfileContainer = styled.div`
@@ -23,8 +37,26 @@ const ProfileContainer = styled.div`
 `;
 
 const Line = styled.div``;
+const ImgProfilePic = ({ toggleAscii }) => (
+  <PictureContainer
+    onClick={toggleAscii}
+    onKeyDown={toggleAscii}
+    role="button"
+    tabIndex="0"
+  >
+    <ProfileImage />
+  </PictureContainer>
+);
 
-const Profile = () => {
+ImgProfilePic.propTypes = {
+  toggleAscii: PropTypes.func,
+};
+
+ImgProfilePic.defaultProps = {
+  toggleAscii: () => {},
+};
+
+const AsciiProfilePic = ({ toggleAscii }) => {
   const { data } = useStaticQuery(graphql`
     {
       dataJson {
@@ -39,18 +71,54 @@ const Profile = () => {
   `).dataJson;
 
   return (
+    <PictureContainer
+      onClick={toggleAscii}
+      onKeyDown={toggleAscii}
+      role="button"
+      tabIndex="0"
+    >
+      {data.map((line, lineId) => (
+        <Line key={lineId}>
+          {line.map((char, charId) => (
+            <span
+              key={charId}
+              style={{ color: `rgb(${char.r},${char.g},${char.b})` }}
+            >
+              {char.v}
+            </span>
+          ))}
+        </Line>
+      ))}
+    </PictureContainer>
+  );
+};
+
+AsciiProfilePic.propTypes = {
+  toggleAscii: PropTypes.func,
+};
+
+AsciiProfilePic.defaultProps = {
+  toggleAscii: () => {},
+};
+
+const Profile = () => {
+  const [showAscii, setShowAscii] = useState(true);
+  const toggleAscii = event => {
+    if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
+    setShowAscii(!showAscii);
+  };
+  return (
     <ProfileContainer>
-      <PictureContainer>
-        {data.map(line => (
-          <Line>
-            {line.map(char => (
-              <span style={{ color: `rgb(${char.r},${char.g},${char.b})` }}>
-                {char.v}
-              </span>
-            ))}
-          </Line>
-        ))}
-      </PictureContainer>
+      <MobileView>
+        <ImgProfilePic />
+      </MobileView>
+      <BrowserView>
+        {showAscii ? (
+          <AsciiProfilePic toggleAscii={toggleAscii} />
+        ) : (
+          <ImgProfilePic toggleAscii={toggleAscii} />
+        )}
+      </BrowserView>
       <header>
         <h1>Zaratan</h1>
         <h3>Les élucubrations d'un developeur fatigué</h3>
