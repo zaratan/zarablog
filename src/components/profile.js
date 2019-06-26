@@ -26,6 +26,8 @@ const PictureContainer = styled.div`
     outline: none;
     box-shadow: none;
   }
+  /* Fix gatsby Image behaviour on mobile */
+  position: relative;
 `;
 
 const ProfileContainer = styled.div`
