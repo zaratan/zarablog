@@ -48,6 +48,10 @@ const ArticleHeader = styled.header`
 const Title = styled.h1`
   margin: 0;
   font-size: 4rem;
+  text-align: center;
+  @media (max-width: 500px) {
+    font-size: 3rem;
+  }
 `;
 
 const ArticleInfos = styled.section`
