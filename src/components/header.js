@@ -158,7 +158,7 @@ const Header = ({ siteTitle }) => {
         <CircleLink
           aria-label="home"
           to="/"
-          onClick={() => isMobile && console.log('lol') && toggleProfileOpen()}
+          onClick={() => isMobile && toggleProfileOpen()}
         >
           <RedCircle>
             <Icon icon="home" />
