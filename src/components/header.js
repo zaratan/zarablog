@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isMobile } from 'react-device-detect';
+import { isBrowser } from 'react-device-detect';
 import ThemeContext from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
 
@@ -141,7 +141,7 @@ const EmptyRight = styled.span`
 
 const Header = ({ siteTitle }) => {
   const { isDark, toggleDark } = useContext(ThemeContext);
-  const { toggleProfileOpen } = useContext(LayoutContext);
+  const { toggleProfileOpen, closeProfile } = useContext(LayoutContext);
   const actOnLightButton = event => {
     if (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32)) return;
     toggleDark();
@@ -152,13 +152,23 @@ const Header = ({ siteTitle }) => {
     toggleProfileOpen();
   };
 
+  const actOnHomeButton = event => {
+    if (
+      isBrowser ||
+      (event.keyCode && (event.keyCode !== 13 && event.keyCode !== 32))
+    )
+      return;
+    closeProfile();
+  };
+
   return (
     <HeaderStyle>
       <CircleContainer>
         <CircleLink
           aria-label="home"
           to="/"
-          onClick={() => isMobile && toggleProfileOpen()}
+          onClick={actOnHomeButton}
+          onKeyDown={actOnHomeButton}
         >
           <RedCircle>
             <Icon icon="home" />

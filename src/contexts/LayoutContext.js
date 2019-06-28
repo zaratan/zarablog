@@ -18,11 +18,16 @@ export const LayoutProvider = ({ children }) => {
     setProfileOpen(!isProfileOpen);
   };
 
+  const closeProfile = () => {
+    setProfileOpen(false);
+  };
+
   return (
     <LayoutContext.Provider
       value={{
         isProfileOpen,
         toggleProfileOpen,
+        closeProfile,
       }}
     >
       {children}
