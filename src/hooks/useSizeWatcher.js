@@ -8,7 +8,7 @@ const genSizeWatcher = (setSize, time) =>
   }, time);
 
 export const useSizeWatcher = props => {
-  const [size, setSize] = useState(window ? window.innerWidth : '1440');
+  const [size, setSize] = useState(window === undefined ? '1440' : window.innerWidth);
   useEffect(() => {
     const toWait = props === undefined ? 100 : props.wait || 100;
     const sizeWatcher = genSizeWatcher(setSize, toWait);
