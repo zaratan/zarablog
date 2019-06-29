@@ -14,7 +14,6 @@ export const useSizeWatcher = props => {
   } catch (error) {
     console.log(error);
   }
-  let window;
   const [size, setSize] = useState(firstSize);
   useEffect(() => {
     const toWait = props === undefined ? 100 : props.wait || 100;
@@ -23,6 +22,6 @@ export const useSizeWatcher = props => {
     return () => {
       window.removeEventListener('resize', sizeWatcher);
     };
-  }, [props, window]);
+  }, [props]);
   return size;
 };
