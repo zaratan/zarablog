@@ -14,7 +14,7 @@ export const useSizeWatcher = props => {
   } catch (error) {
     console.log(error);
   }
-  const [size, setSize] = useState(window === undefined ? '1440' : firstSize);
+  const [size, setSize] = useState(firstSize);
   useEffect(() => {
     const toWait = props === undefined ? 100 : props.wait || 100;
     const sizeWatcher = genSizeWatcher(setSize, toWait);
