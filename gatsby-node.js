@@ -16,13 +16,9 @@ exports.createPages = ({ graphql, actions }) => {
         {
           allMdx(sort: { fields: frontmatter___date, order: DESC }) {
             nodes {
-              timeToRead
+              id
               frontmatter {
                 title
-                date
-              }
-              code {
-                body
               }
             }
           }

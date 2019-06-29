@@ -1,11 +1,13 @@
 ---
-type: post
 title: "Docker"
 date: 2018-02-16T18:19:00
-categories: 
+categories:
   - THP
   - système
+description: "Un article vidéo qui parle de Docker. Pourquoi ça existe, a quoi ça sert et comment on s'en sert."
 ---
+
+import Youtube from "../components/Youtube";
 
 Une vidéo pour THP où je parle de Docker.
 
@@ -13,50 +15,51 @@ Qu'est-ce que c'est qu'un container, pourquoi on a créé ça?
 Comment se servir de Docker et Docker compose.
 
 <!-- more -->
-{{< youtube bCR4SUV8ouc >}}
+
+<Youtube videoId="bCR4SUV8ouc" />
 
 # Un peu d'histoire
 
-* Comment on transporte une chaise depuis Londres vers SF au cours des ages ?
-* C'est quoi le f*****ng rapport avec docker ?
-* C'était quoi déployer et gerer des serveurs avant toute cet engouement envers le DevOps ?
-* Ce que Docker apporte à la donne.
+- Comment on transporte une chaise depuis Londres vers SF au cours des ages ?
+- C'est quoi le f**\***ng rapport avec docker ?
+- C'était quoi déployer et gerer des serveurs avant toute cet engouement envers le DevOps ?
+- Ce que Docker apporte à la donne.
 
 # Créer un container
 
-* [Installer Docker](https://docs.docker.com/install/)
-* On part d'une image
-* Commandes Docker utiles
-* [Dockerhub](https://hub.docker.com/)
-* Ports, Volumes, Env var
+- [Installer Docker](https://docs.docker.com/install/)
+- On part d'une image
+- Commandes Docker utiles
+- [Dockerhub](https://hub.docker.com/)
+- Ports, Volumes, Env var
 
 # Écriture d'une image
 
-* Pourquoi et quand ? (pour réaliser notre promesse du départ)
-* La notion de layer
-* [Dockerfile](https://docs.docker.com/engine/reference/builder/#usage)
-* Dokerhub le retour
+- Pourquoi et quand ? (pour réaliser notre promesse du départ)
+- La notion de layer
+- [Dockerfile](https://docs.docker.com/engine/reference/builder/#usage)
+- Dokerhub le retour
 
 # Orchestrer des images
 
-avec docker-compose (pour sauver notre santé mentale) 
+avec docker-compose (pour sauver notre santé mentale)
 
-* [docker-compose.yml](https://docs.docker.com/compose/compose-file/)
-* [Commandes](https://docs.docker.com/compose/reference/overview/) docker-compose
-* Mac fix (ajouter `127.0.0.1 localunixsocket.local` a /etc/hosts sur mac)
-* alias dc="docker-compose"
+- [docker-compose.yml](https://docs.docker.com/compose/compose-file/)
+- [Commandes](https://docs.docker.com/compose/reference/overview/) docker-compose
+- Mac fix (ajouter `127.0.0.1 localunixsocket.local` a /etc/hosts sur mac)
+- alias dc="docker-compose"
 
-# Deployer de la prod 
+# Deployer de la prod
 
 (et éventuellement jeter la santé mentale qu'on avait sauvé a l'étape d'avant (je vais juste faire un aperçu sur le sujet))
 
-* Heroku
-* Continuous Integration/Deployment
-* [Heroku](https://devcenter.heroku.com/articles/container-registry-and-runtime) bis
-* AWS ECS https://aws.amazon.com/fr/ecs/
-* Kubernetes + Gcloud
+- Heroku
+- Continuous Integration/Deployment
+- [Heroku](https://devcenter.heroku.com/articles/container-registry-and-runtime) bis
+- AWS ECS https://aws.amazon.com/fr/ecs/
+- Kubernetes + Gcloud
 
 # Bonus
 
-* Kitematic :)
-* Comment ça marche Docker underthehood (si j'ai l'temps)
+- Kitematic :)
+- Comment ça marche Docker underthehood (si j'ai l'temps)

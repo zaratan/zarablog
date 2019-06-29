@@ -1,14 +1,18 @@
 ---
-type: post
 title: "Les APIs en rails (ou pas)"
 date: 2018-02-11T18:08:00
-comments: true
 categories: 
   - THP
   - code
   - ruby
+description: "Une nouvelle vidéo pour THP on parlera d'APIs.
 
+Je présenterai ce qu'est une API et pourquoi une API.
+Quelles sont les librairies utiles et qu'est-ce que je conseille d'utiliser.
+On finira par une rapide présentation d'un client pour API."
 ---
+
+import Youtube from "../components/Youtube";
 
 Une nouvelle vidéo pour THP on parlera d'APIs.
 
@@ -18,21 +22,22 @@ On finira par une rapide présentation d'un client pour API.
 
 <!-- more -->
 
-{{< youtube b73JeMKTYQw >}}
+<Youtube videoId="b73JeMKTYQw" />
 
 # Un peu de théorie
 
-* Pourquoi une API ?
-* Qui seront les clients de vos APIs?
-  * Vos apps mobile
-  * Votre front (one-page app ou AJAX)
-  * Les gens qui vont utiliser votre API
+- Pourquoi une API ?
+- Qui seront les clients de vos APIs?
 
-* RESTful? Safe? Idempotent?
-* CORS => https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
-* Self discovery
-* Uuid
-* Documentation => J'en parlerai plus dans une autre vidéo
+  - Vos apps mobile
+  - Votre front (one-page app ou AJAX)
+  - Les gens qui vont utiliser votre API
+
+- RESTful? Safe? Idempotent?
+- CORS => https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+- Self discovery
+- Uuid
+- Documentation => J'en parlerai plus dans une autre vidéo
 
 # JSONAPI et autres normes
 
@@ -44,42 +49,41 @@ Il va falloir décider a un moment d'un "format" de réponse.
 
 # Rails new (--api)
 
-* C'est important de regarder un jour toutes les options de rails new.
-* Ma version pour une API: 
-`rails new --api -d postgresql -S --skip-coffee -J --skip-turbolinks -T name_of_my_repo`
-* Mettre des uuid pour tout ses modèles: https://lab.io/articles/2017/04/13/uuids-rails-5-1/
+- C'est important de regarder un jour toutes les options de rails new.
+- Ma version pour une API:
+  `rails new --api -d postgresql -S --skip-coffee -J --skip-turbolinks -T name_of_my_repo`
+- Mettre des uuid pour tout ses modèles: https://lab.io/articles/2017/04/13/uuids-rails-5-1/
 
 # Gems \o/
 
-* Remettre des tests ;) (if rspec)
-* [rack-cors](https://github.com/cyu/rack-cors) => gère les règles de CORS
-* [rack-timeout](https://github.com/heroku/rack-timeout) => Puma ne timeout pas automatiqument. Toujours limiter son temps de requête. Si c'est trop long => Background job.
-* [active_model_serializers](https://github.com/rails-api/active_model_serializers/tree/0-10-stable) => Serialise des resources en JSON (et enventuellement "_respecte_" la norme JSONAPI)
-* [kaminari](https://github.com/kaminari/kaminari) => Pagination made easy (bonus: s'intègre avec active_model_serializers)
-* [pundit](https://github.com/varvet/pundit) => Gestion des droits
-* [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) => Authentification.
+- Remettre des tests ;) (if rspec)
+- [rack-cors](https://github.com/cyu/rack-cors) => gère les règles de CORS
+- [rack-timeout](https://github.com/heroku/rack-timeout) => Puma ne timeout pas automatiqument. Toujours limiter son temps de requête. Si c'est trop long => Background job.
+- [active_model_serializers](https://github.com/rails-api/active_model_serializers/tree/0-10-stable) => Serialise des resources en JSON (et enventuellement "_respecte_" la norme JSONAPI)
+- [kaminari](https://github.com/kaminari/kaminari) => Pagination made easy (bonus: s'intègre avec active_model_serializers)
+- [pundit](https://github.com/varvet/pundit) => Gestion des droits
+- [devise_token_auth](https://github.com/lynndylanhurley/devise_token_auth) => Authentification.
 
 # Auth (JWT? DAT? WTF?)
 
-* Globalement ça dépend des besoins.
-* JWT: Une norme pour faire de l'authentification https://jwt.io/. Défauts:
-	* La plupart des implémentations (en ruby) sont discutables.
-	* http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/
-* Devis Auth Token: Tokens d'authentification qui change a "_chaque_" requête.
-	* Ça a quelques défauts: Redirect un peu étrange. Pas de champs login de devise. Override beaucoup de bouts de Devise donc certains mécanismes marchent pas si bien. Des bugs. Pas d'intégration facile avec.
-	* Ça a plein d'avantages: Facile à ajouter (c'est globalement comme Devise). C'est secure (si on omet la config par défaut du redirect). Faire une intégration avec c'est simple.
-	* J'en ai une version custom avec quelques fixes ici: https://github.com/denispasin/devise_token_auth/
+- Globalement ça dépend des besoins.
+- JWT: Une norme pour faire de l'authentification https://jwt.io/. Défauts:
+  _ La plupart des implémentations (en ruby) sont discutables.
+  _ http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/
+- Devis Auth Token: Tokens d'authentification qui change a "_chaque_" requête.
+  _ Ça a quelques défauts: Redirect un peu étrange. Pas de champs login de devise. Override beaucoup de bouts de Devise donc certains mécanismes marchent pas si bien. Des bugs. Pas d'intégration facile avec.
+  _ Ça a plein d'avantages: Facile à ajouter (c'est globalement comme Devise). C'est secure (si on omet la config par défaut du redirect). Faire une intégration avec c'est simple. \* J'en ai une version custom avec quelques fixes ici: https://github.com/denispasin/devise_token_auth/
 
 # Faire une gem pour consume (manger?) une API.
 
-* `bundle gem gem_name`
-* [Faraday](https://github.com/lostisland/faraday/) => Une gem pour faire des appels HTTP (en vrai ça peut faire plus que du HTTP) qui se comporte très bien comme gem de base de client (notion de "_connection_")
-* Exemple: https://github.com/denispasin/subox_api
+- `bundle gem gem_name`
+- [Faraday](https://github.com/lostisland/faraday/) => Une gem pour faire des appels HTTP (en vrai ça peut faire plus que du HTTP) qui se comporte très bien comme gem de base de client (notion de "_connection_")
+- Exemple: https://github.com/denispasin/subox_api
 
 # Les tests !
 
-* Classique comme pour rails
-* Parser et déparser du JSON
-* Assert serializer
-* Ajouter des tests depuis une gem consomatrice avec `vcr` ça vous assure que vos tests d'intégration sont plus robustes.
-* Outil utile: [Postman](https://www.getpostman.com/)
+- Classique comme pour rails
+- Parser et déparser du JSON
+- Assert serializer
+- Ajouter des tests depuis une gem consomatrice avec `vcr` ça vous assure que vos tests d'intégration sont plus robustes.
+- Outil utile: [Postman](https://www.getpostman.com/)

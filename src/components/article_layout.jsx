@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+import { useStaticQuery, graphql } from 'gatsby';
 import Layout from './layout';
 import LayoutContext from '../contexts/LayoutContext';
+import SEO from './seo';
 
 const ArticleContainer = styled.article`
   max-width: 800px;
@@ -74,15 +76,37 @@ const Highlight = styled.span`
 `;
 
 const ArticleLayout = ({ pageContext }) => {
-  const { article } = pageContext;
+  const article = useStaticQuery(graphql`
+    {
+      allMdx {
+        nodes {
+          id
+          frontmatter {
+            title
+            date
+            description
+          }
+          timeToRead
+          code {
+            body
+          }
+        }
+      }
+    }
+  `).allMdx.nodes.find(node => {
+    console.log({ node, pageContext });
+    return node.id === pageContext.article.id;
+  });
+
   const { code, frontmatter, timeToRead } = article;
-  const { title, date } = frontmatter;
+  const { title, date, description } = frontmatter;
   const { isProfileOpen } = useContext(LayoutContext);
   console.log({
     pageContext,
   });
   return (
     <Layout>
+      <SEO title={title} description={description} />
       <ArticleHeader>
         <Title>{title}</Title>
         <ArticleInfos isProfileOpen={isProfileOpen}>
