@@ -30,6 +30,7 @@ import GlobalStyle from '../styles/GlobalStyle';
 import Profile from './profile';
 import ThemeContext, { defaultTheme } from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
+import MainErrorCatcher from './MainErrorCatcher';
 
 [
   faHome,
@@ -112,10 +113,12 @@ const Layout = ({ children }) => {
             <GlobalStyle />
             <Header siteTitle={data.site.siteMetadata.title} />
             <MainWrapper>
-              <Main profileOpen={isProfileOpen}>{children}</Main>
-              <AsideProfile profileOpen={isProfileOpen}>
-                <Profile />
-              </AsideProfile>
+              <MainErrorCatcher>
+                <Main profileOpen={isProfileOpen}>{children}</Main>
+                <AsideProfile profileOpen={isProfileOpen}>
+                  <Profile />
+                </AsideProfile>
+              </MainErrorCatcher>
             </MainWrapper>
             <Footer>Zaratan © {new Date().getFullYear()}</Footer>
           </>
