@@ -13,12 +13,16 @@ export class MainErrorCatcher extends Component {
 
   componentDidCatch(error, info) {
     // You can also log the error to an error reporting service
-    window.Sentry.configureScope(scope => {
-      Object.keys(info).forEach(key => {
-        scope.setExtra(key, info[key]);
+    if (window.Sentry !== undefined) {
+      window.Sentry.configureScope(scope => {
+        Object.keys(info).forEach(key => {
+          scope.setExtra(key, info[key]);
+        });
       });
-    });
-    window.Sentry.captureException(error);
+      window.Sentry.captureException(error);
+    } else {
+      console.log({ message: 'Something went wrong :(', error, info });
+    }
   }
 
   render() {
@@ -27,10 +31,12 @@ export class MainErrorCatcher extends Component {
     const { children } = this.props;
     if (hasError) {
       return (
-        <div>
-          Quelque chose est brisé, j'ai bien été notifié de l'erreur :( Vous
-          pouvez me contacter via
-          <a href="mailto:denis.pasin@gmail.com">denis.pasin@gmail.com</a>
+        <div style={{ margin: 'auto' }}>
+          <p>Quelque chose est brisé, j'ai bien été notifié de l'erreur :(</p>
+          <p>
+            Vous pouvez me contacter via{' '}
+            <a href="mailto:denis.pasin@gmail.com">denis.pasin@gmail.com</a>
+          </p>
         </div>
       );
     }
