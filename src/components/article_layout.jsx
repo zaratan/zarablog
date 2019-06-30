@@ -13,6 +13,35 @@ const ArticleContainer = styled.article`
   max-width: 800px;
   padding: 5px;
   margin: 0 auto;
+  font-size: 20px;
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 5rem;
+  }
+  h2 {
+    font-size: 40px;
+  }
+  h1 {
+    font-size: 45px;
+  }
+  h3 {
+    font-size: 30px;
+  }
+  h4 {
+    font-size: 30px;
+  }
+  p {
+    margin-bottom: 2.5rem;
+    line-height: 1.5;
+  }
+
+  code {
+    font-size: 18px;
+  }
+
   @media only screen and (max-width: ${props =>
       props.isProfileOpen ? '1200px' : '800px'}) {
     max-width: 700px;
