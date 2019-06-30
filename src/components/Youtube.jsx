@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import YoutubeContainer from 'react-youtube';
 import LayoutContext from '../contexts/LayoutContext';
 import { useSizeWatcher } from '../hooks/useSizeWatcher';
+import YoutubeErrorCatcher from './YoutubeErrorCatcher';
 
 function Youtube({ videoId }) {
   const { isProfileOpen } = useContext(LayoutContext);
@@ -34,4 +35,10 @@ Youtube.propTypes = {
   videoId: PropTypes.string.isRequired,
 };
 
-export default Youtube;
+const YoutubeWrap = ({ videoId }) => (
+  <YoutubeErrorCatcher videoId={videoId}>
+    <Youtube videoId={videoId} />
+  </YoutubeErrorCatcher>
+);
+
+export default YoutubeWrap;
