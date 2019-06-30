@@ -37,6 +37,9 @@ const ArticleContainer = styled.article`
     margin-bottom: 2.5rem;
     line-height: 1.5;
   }
+  ul {
+    list-style-type: disc;
+  }
 
   code {
     font-size: 18px;
