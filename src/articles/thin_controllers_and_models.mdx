@@ -5,6 +5,7 @@ categories: ["code"]
 description: "Diverses techniques pour réduire la taille de son controller et de ses modèles. On parlera d'architecture et de diverses méthodes de Rails."
 ---
 
+import FileName from "../components/FileName";
 import Youtube from "../components/Youtube";
 
 <Youtube videoId="PjV6inAke8k" />
@@ -217,7 +218,7 @@ En effet, il y a de grande chances que la majeure partie de notre application se
 
 Ici, on a donc :
 
-{{< filename "app/controllers/application_controller.rb" >}}
+<FileName filename="app/controllers/application_controller.rb" />
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -248,7 +249,7 @@ end
 
 et :
 
-{{< filename "app/controllers/posts_controller.rb"  >}}
+<FileName filename="app/controllers/posts_controller.rb" />
 
 ```ruby
 class PostsController < ApplicationController
@@ -320,7 +321,7 @@ Un singleton assure qu'il n'y aura toujours qu'une seule instance d'une classe d
 
 **3: Protégez vous des services externes en les englobant dans des Services**
 
-{{< filename "app/services/slack_service.rb" >}}
+<FileName filename="app/services/slack_service.rb" />
 
 ```ruby
 require 'singleton' # Ceci pourrait être fait ailleurs mais bon…
@@ -415,7 +416,7 @@ Tout ce qui arrivera dans ce block doit bien se passer. Dans le cas contraire, l
 
 Dans le cas présent, ça donnerait :
 
-{{< filename "app/controllers/application_controller.rb" >}}
+<FileName filename="app/controllers/application_controller.rb" />
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -435,7 +436,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-{{< filename "app/controllers/posts_controller.rb" >}}
+<FileName filename="app/controllers/posts_controller.rb" />
 
 ```ruby
 class PostsController < ApplicationController
@@ -474,7 +475,7 @@ Je ne vais pas m'attarder sur pundit, ça fera l'objet d'un futur article.
 
 En bref :
 
-{{< filename "app/policies/post_policy.rb">}}
+<FileName filename="app/policies/post_policy.rb" />
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -484,7 +485,7 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
-{{< filename "app/controllers/application_controller.rb">}}
+<FileName filename="app/controllers/application_controller.rb" />
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -503,7 +504,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-{{< filename "app/controllers/posts_controller.rb">}}
+<FileName filename="app/controllers/posts_controller.rb" />
 
 ```ruby
 class PostsController < ApplicationController

@@ -9,6 +9,7 @@ categories:
 description: 'On setup un webpack "basique" pour builder un site web avec du JS moderne. Cette config serait quasiment reproductible et utilisable pour tous les sites statiques que vous voudriez créer.'
 ---
 
+import FileName from "../components/FileName";
 import Youtube from "../components/Youtube";
 
 On setup un webpack "basique" pour builder un site web avec du JS moderne. Cette config serait quasiment reproductible et utilisable pour tous les sites statiques que vous voudriez créer.
@@ -152,7 +153,7 @@ yarn add jquery
 
 #### Importer les librairies
 
-{{< filename "index.js" >}}
+<FileName filename="index.js" />
 
 ```js index.js
 import _ from "lodash";
@@ -183,7 +184,7 @@ yarn add -D webpack-dev-server
 
 On ajoute une section devServer dans `webpack.common.babel.js` indiquant au server qu'il doit servir les fichiers se trouvant dans le dossier `dist`:
 
-{{< filename "webpack.config.babel.js" >}}
+<FileName filename="webpack.config.babel.js" />
 
 ```js webpack.common.babel.js
 devServer: {
@@ -195,7 +196,7 @@ devServer: {
 
 On remplace les scripts précédents par ceux ci:
 
-{{< filename "package.json" >}}
+<FileName filename="package.json" />
 
 ```json package.json
 "scripts": {
@@ -267,7 +268,7 @@ La grande différence va être dans le Mode et dans le type de sourcemap. Les so
 
 Dans le common on retire ce qui avait trait au dev:
 
-{{< filename "webpack.common.babel.js" >}}
+<FileName filename="webpack.common.babel.js" />
 
 ```js webpack.common.babel.js
 import path from "path";
@@ -344,7 +345,7 @@ yarn add -D html-loader
 
 Puis on ajoute dans les règles:
 
-{{< filename "webpack.common.babel.js" >}}
+<FileName filename="webpack.common.babel.js" />
 
 ```js webpack.common.babel.js
 {
@@ -363,7 +364,7 @@ yarn add -D url-loader file-loader
 
 Puis, dans les règles:
 
-{{< filename "webpack.common.babel.js" >}}
+<FileName filename="webpack.common.babel.js" />
 
 ```js webpack.common.babel.js
 {
@@ -385,7 +386,7 @@ yarn add -D style-loader css-loader
 
 Puis dans les règles:
 
-{{< filename "webpack.common.babel.js" >}}
+<FileName filename="webpack.common.babel.js" />
 
 ```js webpack.common.babel.js
 {

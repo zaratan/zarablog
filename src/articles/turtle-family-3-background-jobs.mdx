@@ -9,6 +9,7 @@ categories:
 description: "On ajoute a nos tortues la possibilité d'agir en dehors des requêtes HTTP en envoyant des emails"
 ---
 
+import FileName from "../components/FileName";
 import Youtube from "../components/Youtube";
 
 On ajoute a nos tortues la possibilité d'agir en dehors des requêtes HTTP en envoyant des emails
@@ -90,7 +91,7 @@ qui va créer un nouveau TurtleMailer avec un mail de type create.
 
 La classe d'un mailer ressemble à ça:
 
-{{< filename "app/mailers/turtle_mailer.rb" >}}
+<FileName filename="app/mailers/turtle_mailer.rb" />
 
 ```ruby app/mailers/turtle_mailer.rb
 class TurtleMailer < ApplicationMailer
@@ -124,7 +125,7 @@ C'est un outil très pratique pour envoyer des emails "pour de vrai" et tous les
 
 Ensuite on configure son fichier d'environnement de dev pour l'utiliser:
 
-{{< filename "config/environnements/development.rb" >}}
+<FileName filename="config/environnements/development.rb" />
 
 ```ruby config/environments/development.rb
 config.action_mailer.delivery_method = :smtp
@@ -146,7 +147,7 @@ C'est une **TRÈS** mauvaise idée de commit des clés d'API, des noms d'utilisa
 
 On transforme le fichier d'environnement de la façon suivante:
 
-{{< filename "config/environnements/development.rb" >}}
+<FileName filename="config/environnements/development.rb" />
 
 ```ruby
 config.action_mailer.delivery_method = :smtp
@@ -191,7 +192,7 @@ Pour ajouter sendgrid et le faire fonctionner il y a une suite d'étape a respec
 
 #### 3) On ajoute une ligne dans le Procfile
 
-{{< filename Procfile >}}
+<FileName filename="Procfile" />
 
 ```yaml Procfile
 worker: bundle exec sidekiq -q default -q mailers -c 10
@@ -208,7 +209,7 @@ C'est bien beau tout ça mais nos mails ne vont pas encore dans sidekiq. Pour ç
 
 Ajouter dans le fichier application.rb:
 
-{{< filename "config/application.rb" >}}
+<FileName filename="config/application.rb" />
 
 ```ruby config/application.rb
 config.active_job.queue_adapter = :sidekiq
@@ -222,7 +223,7 @@ TurtleMailer.create(self).deliver_later
 
 IMPORTANT: Pour ne pas créer des jobs en lançant ses tests: on ajoute à la fin du rails_helper:
 
-{{< filename "spec/rails_helper.rb" >}}
+<FileName filename="spec/rails_helper.rb" />
 
 ```ruby spec/rails_helper.rb
 ActiveJob::Base.queue_adapter = :test
@@ -235,7 +236,7 @@ Voilà.
 Pour configurer Sendgrid:
 On ajoute l'add-on en staging/production, puis on ajoute dans notre fichier d'environnement:
 
-{{< filename "config/environnements/production.rb" >}}
+<FileName filename="config/environnements/production.rb" />
 
 ```ruby config/environments/production.rb
 config.action_mailer.delivery_method = :smtp

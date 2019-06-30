@@ -9,6 +9,7 @@ categories:
 description: "On ajoute React a notre app basique pour builder un site web avec du JS moderne. Au passage j'ajouterai Bootstrap pour donner un exemple sympa de plugin React."
 ---
 
+import FileName from "../components/FileName";
 import Youtube from "../components/Youtube";
 
 On ajoute React a notre app basique pour builder un site web avec du JS moderne. Au passage j'ajouterai Bootstrap pour donner un exemple sympa de plugin React.
@@ -38,7 +39,7 @@ yarn add -D @babel/preset-react # Pour que babel puisse traduire la syntaxe de R
 
 - Ajouter une nouvelle section:
 
-{{< filename "webpack.common.babel.js" >}}
+<FileName filename="webpack.common.babel.js" />
 
 ```js webpack.common.babel.js
 resolve: {
@@ -50,7 +51,7 @@ resolve: {
 
 #### Étape 3: On ajoute le preset react au babelrc
 
-{{< filename ".babelrc" >}}
+<FileName filename=".babelrc" />
 
 ```json .babelrc
 "presets": [
@@ -141,7 +142,7 @@ import MyComponent from './my-component'
 
 La fonction de définition de notre component prend un objet en argument exemple:
 
-{{< filename "user.jsx" >}}
+<FileName filename="user.jsx" />
 
 ```js user.jsx
 import React from "react";
@@ -170,7 +171,7 @@ On va donc transformer notre page entière en jsx.
 
 On supprime tout le HTML de la page
 
-{{< filename "index.html" >}}
+<FileName filename="index.html" />
 
 ```html index.html
 <!DOCTYPE html>
@@ -191,7 +192,7 @@ On supprime tout le HTML de la page
 
 On injecte le component principal dans la page
 
-{{< filename "index.js" >}}
+<FileName filename="index.js" />
 
 ```js index.js
 import React from "react";
