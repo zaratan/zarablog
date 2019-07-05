@@ -3,7 +3,6 @@ import { debounce } from 'lodash';
 
 const genSizeWatcher = (setSize, time) =>
   debounce(() => {
-    console.log('resized !');
     setSize(window.innerWidth);
   }, time);
 
