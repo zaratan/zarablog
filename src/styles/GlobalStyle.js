@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
 html {
   box-sizing: border-box;
   /* font-size: 10px; */
