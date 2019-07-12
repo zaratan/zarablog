@@ -8,5 +8,9 @@
       "config": { "distDir": "public" }
     }
   ],
-  "alias": ["next.zaratan.fr"]
+  "alias": ["next.zaratan.fr"],
+  "env": {
+    "GA_CLIENT_EMAIL": "@ga_client_email",
+    "GA_SECRET_KEY": "@ga_secret_key"
+  }
 }
