@@ -11,7 +11,10 @@ export default function HTML(props) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap"
+        />
         {props.headComponents}
       </head>
       <body {...props.bodyAttributes}>
