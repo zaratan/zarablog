@@ -111,21 +111,30 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-sentry',
-      options: {
-        dsn: 'https://f770273393d44fc3bf916a6fb6ea3e41@sentry.io/1493414',
-        // Optional settings, see https://docs.sentry.io/clients/node/config/#optional-settings
-        environment: process.env.NODE_ENV,
-        enabled: (() =>
-          ['production', 'stage'].indexOf(process.env.NODE_ENV) !== -1)(),
-      },
-    },
-    {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         trackingId: 'UA-44943460-6',
       },
     },
+    process.env.GA_CLIENT_EMAIL
+      ? {
+          resolve: 'gatsby-plugin-guess-js',
+          options: {
+            // Find the view id in the GA admin in a section labeled "views"
+            GAViewID: `ga:197736974`,
+            jwt: {
+              client_email: process.env.GA_CLIENT_EMAIL,
+              private_key: process.env.GA_SECRET_KEY,
+            },
+            minimumThreshold: 0.03,
+            // The "period" for fetching analytic data.
+            period: {
+              startDate: new Date('2018-1-1'),
+              endDate: new Date(),
+            },
+          },
+        }
+      : 'gatsby-plugin-webpack-bundle-analyser-v2',
 
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline

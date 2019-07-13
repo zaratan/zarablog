@@ -1,6 +1,12 @@
 {
   "version": 2,
   "name": "Zaratan@next",
+  "build": {
+    "env": {
+      "GA_CLIENT_EMAIL": "@ga_client_email",
+      "GA_SECRET_KEY": "@ga_secret_key"
+    }
+  },
   "builds": [
     {
       "src": "package.json",

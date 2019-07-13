@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Sentry from '@sentry/browser';
 
 export class MainErrorCatcher extends Component {
   constructor(props) {
@@ -13,13 +14,13 @@ export class MainErrorCatcher extends Component {
 
   componentDidCatch(error, info) {
     // You can also log the error to an error reporting service
-    if (window.Sentry !== undefined) {
-      window.Sentry.configureScope(scope => {
+    if (Sentry !== undefined) {
+      Sentry.configureScope(scope => {
         Object.keys(info).forEach(key => {
           scope.setExtra(key, info[key]);
         });
       });
-      window.Sentry.captureException(error);
+      Sentry.captureException(error);
     } else {
       console.log({ message: 'Something went wrong :(', error, info });
     }
