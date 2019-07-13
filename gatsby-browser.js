@@ -11,6 +11,16 @@ import * as Sentry from '@sentry/browser';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { LayoutProvider } from './src/contexts/LayoutContext';
 
+export const onServiceWorkerUpdateReady = () => {
+  const answer = window.confirm(
+    `Ce site a été mis à jour. Voulez-vous recharger la page ?`
+  );
+
+  if (answer === true) {
+    window.location.reload();
+  }
+};
+
 const sentryConfig = {
   dsn: 'https://f770273393d44fc3bf916a6fb6ea3e41@sentry.io/1493414',
   // Optional settings, see https://docs.sentry.io/clients/node/config/#optional-settings
