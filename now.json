@@ -1,15 +1,17 @@
 {
   "version": 2,
   "name": "Zaratan@next",
+  "build": {
+    "env": {
+      "GA_CLIENT_EMAIL": "@ga_client_email",
+      "GA_SECRET_KEY": "@ga_secret_key"
+    }
+  },
   "builds": [
     {
       "src": "package.json",
       "use": "@now/static-build",
-      "config": { "distDir": "public" },
-      "env": {
-        "GA_CLIENT_EMAIL": "@ga_client_email",
-        "GA_SECRET_KEY": "@ga_secret_key"
-      }
+      "config": { "distDir": "public" }
     }
   ],
   "alias": ["next.zaratan.fr"]
