@@ -1,8 +1,18 @@
+const { NODE_ENV, NOW_GITHUB_COMMIT_REF } = process.env;
+const isProduction =
+  NODE_ENV === 'production' && NOW_GITHUB_COMMIT_REF === 'master';
+const envir =
+  isProduction || NODE_ENV === 'development' ? 'production' : 'else';
+const siteUrl = isProduction
+  ? 'https://www.zaratan.fr'
+  : 'https://next.zaratan.fr';
+
 module.exports = {
   siteMetadata: {
     title: `zaratan@next`,
     description: `Blog personnel de Zaratan. Ce site me sert a poster mes opinions quand à la tech en général`,
     author: `@zaratan`,
+    siteUrl,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -140,5 +150,21 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        resolveEnv: () => envir,
+        env: {
+          production: {
+            policy: [{ userAgent: '*' }],
+          },
+          else: {
+            policy: [{ userAgent: '*', disallow: ['/'] }],
+            sitemap: null,
+            host: null,
+          },
+        },
+      },
+    },
   ],
 };
