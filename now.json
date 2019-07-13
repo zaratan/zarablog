@@ -14,5 +14,5 @@
       "config": { "distDir": "public" }
     }
   ],
-  "alias": ["next.zaratan.fr"]
+  "alias": ["next.zaratan.fr", "www.zaratan.fr", "zaratan.fr"]
 }
