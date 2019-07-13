@@ -111,16 +111,6 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-sentry',
-      options: {
-        dsn: 'https://f770273393d44fc3bf916a6fb6ea3e41@sentry.io/1493414',
-        // Optional settings, see https://docs.sentry.io/clients/node/config/#optional-settings
-        environment: process.env.NODE_ENV,
-        enabled: (() =>
-          ['production', 'stage'].indexOf(process.env.NODE_ENV) !== -1)(),
-      },
-    },
-    {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         trackingId: 'UA-44943460-6',
@@ -131,7 +121,7 @@ module.exports = {
           resolve: 'gatsby-plugin-guess-js',
           options: {
             // Find the view id in the GA admin in a section labeled "views"
-            GAViewID: `197736974`,
+            GAViewID: `ga:197736974`,
             jwt: {
               client_email: process.env.GA_CLIENT_EMAIL,
               private_key: process.env.GA_SECRET_KEY,
