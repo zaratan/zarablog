@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import { MDXProvider } from '@mdx-js/react';
 import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -8,6 +9,10 @@ import { useStaticQuery, graphql } from 'gatsby';
 import Layout from './layout';
 import LayoutContext from '../contexts/LayoutContext';
 import SEO from './seo';
+import Youtube from './Youtube';
+import FileName from './FileName';
+
+const shortcodes = { Youtube, FileName };
 
 const ArticleContainer = styled.article`
   max-width: 800px;
@@ -152,7 +157,9 @@ const ArticleLayout = ({ pageContext }) => {
         </ArticleInfos>
       </ArticleHeader>
       <ArticleContainer isProfileOpen={isProfileOpen}>
-        <MDXRenderer>{body}</MDXRenderer>
+        <MDXProvider components={shortcodes}>
+          <MDXRenderer>{body}</MDXRenderer>
+        </MDXProvider>
       </ArticleContainer>
     </Layout>
   );
