@@ -139,8 +139,6 @@ const Index = () => {
     }
   `).allMdx;
 
-  console.log({ nodes });
-
   return (
     <>
       <SEO title="Home" />

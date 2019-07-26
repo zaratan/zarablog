@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/static-query/
  */
 
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { StaticQuery, graphql } from 'gatsby';
 import styled, { ThemeProvider } from 'styled-components';
@@ -31,6 +31,7 @@ import Profile from './profile';
 import ThemeContext, { defaultTheme } from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
 import MainErrorCatcher from './MainErrorCatcher';
+import { useScroll } from '../hooks/useScroll';
 
 [
   faHome,
@@ -63,6 +64,7 @@ const MainWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+  padding-top: 40px;
 `;
 
 const Footer = styled.footer`
@@ -96,6 +98,7 @@ const Layout = ({ children }) => {
   if (!theme || !theme.base2) {
     theme = defaultTheme;
   }
+
   return (
     <StaticQuery
       query={graphql`

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isBrowser } from 'react-device-detect';
 import ThemeContext from '../contexts/ThemeContext';
 import LayoutContext from '../contexts/LayoutContext';
+import { useScroll } from '../hooks/useScroll';
 
 const SiteTitle = styled.h1`
   font-size: 24px;
@@ -41,6 +42,15 @@ const HeaderStyle = styled.header`
     height: 50px;
     padding-right: 14px;
   }
+  position: fixed;
+  width: 100%;
+  transition: top 0.3s ease-in-out;
+  ${props => {
+    if (props.scrollingUp || props.currentScroll < 40) {
+      return `top: 0;`;
+    }
+    return `top: -40px;`;
+  }}
 `;
 
 const CircleLink = styled(Link)`
@@ -161,8 +171,10 @@ const Header = ({ siteTitle }) => {
     closeProfile();
   };
 
+  const { currentScroll, scrollingUp } = useScroll();
+
   return (
-    <HeaderStyle>
+    <HeaderStyle scrollingUp={scrollingUp} currentScroll={currentScroll}>
       <CircleContainer>
         <CircleLink
           aria-label="home"

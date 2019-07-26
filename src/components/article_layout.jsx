@@ -128,17 +128,11 @@ const ArticleLayout = ({ pageContext }) => {
         }
       }
     }
-  `).allMdx.nodes.find(node => {
-    console.log({ node, pageContext });
-    return node.id === pageContext.article.id;
-  });
+  `).allMdx.nodes.find(node => node.id === pageContext.article.id);
 
   const { body, frontmatter, timeToRead } = article;
   const { title, date, description } = frontmatter;
   const { isProfileOpen } = useContext(LayoutContext);
-  console.log({
-    pageContext,
-  });
   return (
     <Layout>
       <SEO title={title} description={description} />

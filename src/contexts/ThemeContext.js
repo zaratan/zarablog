@@ -22,7 +22,6 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleDark = () => {
     const nextDark = !isDark;
-    console.log({ nextDark, isDark });
     localStorage.setItem('ThemeContext:isDark', JSON.stringify(nextDark));
     setDark(nextDark);
     getTheme(setTheme, nextDark);

@@ -28,7 +28,6 @@ exports.createPages = ({ graphql, actions }) => {
           const articles = result.data.allMdx.nodes;
           articles.forEach(async article => {
             const slug = slugify(article.frontmatter.title.toLowerCase());
-            console.log({ slug });
             await createPage({
               path: slug,
               context: {
