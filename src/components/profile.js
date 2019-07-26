@@ -123,7 +123,7 @@ const Profile = () => {
       </BrowserView>
       <header>
         <h1>Zaratan</h1>
-        <h3>Les élucubrations d'un developeur fatigué</h3>
+        <h3>Les élucubrations d'un développeur fatigué</h3>
         <p>
           Développeur, ludiste, admin sys, grimpeur et cuisinier à mes heures.
           Je suis curieux de tout, tout le temps. J’aime découvrir de nouvelles

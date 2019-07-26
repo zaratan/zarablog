@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import YoutubeContainer from 'react-youtube';
 import LayoutContext from '../contexts/LayoutContext';
-import { useSizeWatcher } from '../hooks/useSizeWatcher';
+import { useWidthWatcher } from '../hooks/useWidthWatcher';
 import YoutubeErrorCatcher from './YoutubeErrorCatcher';
 
 function Youtube({ videoId }) {
   const { isProfileOpen } = useContext(LayoutContext);
-  const size = useSizeWatcher();
+  const size = useWidthWatcher();
   const realEstate = (isProfileOpen ? size - 400 : size) - 30;
   const videoSize = { width: 800, height: 450 };
 
