@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { MDXRenderer } from 'gatsby-mdx';
+import { MDXRenderer } from 'gatsby-plugin-mdx';
 import styled from 'styled-components';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -119,9 +119,7 @@ const ArticleLayout = ({ pageContext }) => {
             description
           }
           timeToRead
-          code {
-            body
-          }
+          body
         }
       }
     }
@@ -130,7 +128,7 @@ const ArticleLayout = ({ pageContext }) => {
     return node.id === pageContext.article.id;
   });
 
-  const { code, frontmatter, timeToRead } = article;
+  const { body, frontmatter, timeToRead } = article;
   const { title, date, description } = frontmatter;
   const { isProfileOpen } = useContext(LayoutContext);
   console.log({
@@ -154,7 +152,7 @@ const ArticleLayout = ({ pageContext }) => {
         </ArticleInfos>
       </ArticleHeader>
       <ArticleContainer isProfileOpen={isProfileOpen}>
-        <MDXRenderer>{code.body}</MDXRenderer>
+        <MDXRenderer>{body}</MDXRenderer>
       </ArticleContainer>
     </Layout>
   );
