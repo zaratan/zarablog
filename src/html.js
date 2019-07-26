@@ -1,8 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function HTML(props) {
   return (
+    // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...props.htmlAttributes}>
       <head>
         <meta charSet="utf-8" />
@@ -25,6 +27,7 @@ export default function HTML(props) {
         <div
           key="body"
           id="___gatsby"
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}
