@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
 
+// Watch scroll updates on the page
+//
+// Returns:
+// - currentScroll: Px since top of page (integer)
+// - scrollingUp: is the user scrollingUp (boolean)
+//
+// Props:
+// - wait: number of ms to wait before firing next update. Default 200
+// - onScroll: callback function to call on each scroll.
 export const useScroll = props => {
   const [currentScroll, setCurrentScroll] = useState(0);
   const [scrollingUp, setScrollingUp] = useState(false);
@@ -7,7 +16,7 @@ export const useScroll = props => {
     // Default values for props
     const toWait = props === undefined ? 200 : props.wait || 200;
     const actOnScroll =
-      props === undefined ? () => {} : props.actOnScroll || (() => {});
+      props === undefined ? () => {} : props.onScroll || (() => {});
 
     // Vars
     let prevScroll = window.pageYOffset;
