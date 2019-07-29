@@ -130,7 +130,7 @@ const GreenCircle = styled(Circle)`
   background-color: ${props => props.theme.green};
 `;
 
-const CircleContainer = styled.div`
+const CircleContainer = styled.nav`
   display: flex;
   width: 120px;
   align-self: center;
