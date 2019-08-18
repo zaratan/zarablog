@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { throttle } from 'lodash';
 
 // Watch scroll updates on the page
 //
@@ -14,42 +15,34 @@ export const useScroll = props => {
   const [scrollingUp, setScrollingUp] = useState(false);
   useEffect(() => {
     // Default values for props
-    const toWait = props === undefined ? 200 : props.wait || 200;
+    const toWait = props === undefined ? 100 : props.wait || 100;
     const actOnScroll =
       props === undefined ? () => {} : props.onScroll || (() => {});
 
     // Vars
     let prevScroll = window.pageYOffset;
-    let scrollWatcherHasFiredRecently = false;
-    let timeOutId = null;
 
     // Watcher
-    const scrollWatcher = () => {
+    const scrollWatcher = throttle(() => {
       // Manual debounce that fire at start of timer
       // (opposite of lodash debounce)
-      if (!scrollWatcherHasFiredRecently) {
-        const nextScroll = window.pageYOffset;
-        // Don't fire on identical scroll
-        if (prevScroll === nextScroll) return;
-        // If toWait is really low don't fire more often than
-        // browser re-rendering
-        window.requestAnimationFrame(function() {
-          // Action
-          actOnScroll({ prevScroll, nextScroll });
-          // Update state
-          setCurrentScroll(nextScroll);
-          setScrollingUp(nextScroll < prevScroll);
-          // Update prev scroll value
-          prevScroll = nextScroll;
 
-          // Wait a bit to allow next call
-          timeOutId = setTimeout(() => {
-            scrollWatcherHasFiredRecently = false;
-          }, toWait);
-        });
-        scrollWatcherHasFiredRecently = true;
-      }
-    };
+      const nextScroll = window.pageYOffset;
+      // Don't fire on identical scroll
+      if (prevScroll === nextScroll) return;
+      // If toWait is really low don't fire more often than
+      // browser re-rendering
+      window.requestAnimationFrame(function() {
+        console.log('ping');
+        // Action
+        actOnScroll({ prevScroll, nextScroll });
+        // Update state
+        setCurrentScroll(nextScroll);
+        setScrollingUp(nextScroll < prevScroll);
+        // Update prev scroll value
+        prevScroll = nextScroll;
+      });
+    }, toWait);
 
     // Listener register
     window.addEventListener('scroll', scrollWatcher);
@@ -57,7 +50,7 @@ export const useScroll = props => {
     // Clean
     return () => {
       window.removeEventListener('scroll', scrollWatcher);
-      window.clearInterval(timeOutId);
+      scrollWatcher.cancel();
     };
   }, [props]);
   return { currentScroll, scrollingUp };

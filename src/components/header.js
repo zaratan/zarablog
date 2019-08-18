@@ -33,6 +33,24 @@ const SiteTitle = styled.h1`
   }
 `;
 
+const calculateHeaderPositioning = (currentScroll, scrollingUp) => {
+  console.log({ currentScroll, scrollingUp });
+  if (currentScroll < 80) {
+    return `
+      top: 0;
+    `;
+  }
+
+  if (scrollingUp)
+    return `
+    top:0;
+  `;
+
+  return `
+    top: -50px;
+  `;
+};
+
 const HeaderStyle = styled.header`
   height: 40px;
   background-color: ${props => props.theme.base2};
@@ -42,15 +60,10 @@ const HeaderStyle = styled.header`
     height: 50px;
     padding-right: 14px;
   }
-  position: fixed;
   width: 100%;
   transition: top 0.3s ease-in-out;
-  ${props => {
-    if (props.scrollingUp || props.currentScroll < 40) {
-      return `top: 0;`;
-    }
-    return `top: -40px;`;
-  }}
+  position: fixed;
+  ${props => calculateHeaderPositioning(props.currentScroll, props.scrollingUp)}
 `;
 
 const CircleLink = styled(Link)`
