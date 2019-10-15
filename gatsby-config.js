@@ -121,32 +121,6 @@ module.exports = {
         name: 'articles',
       },
     },
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: 'UA-44943460-6',
-      },
-    },
-    process.env.GA_CLIENT_EMAIL
-      ? {
-          resolve: 'gatsby-plugin-guess-js',
-          options: {
-            // Find the view id in the GA admin in a section labeled "views"
-            GAViewID: `ga:197736974`,
-            jwt: {
-              client_email: process.env.GA_CLIENT_EMAIL,
-              private_key: process.env.GA_SECRET_KEY,
-            },
-            minimumThreshold: 0.03,
-            // The "period" for fetching analytic data.
-            period: {
-              startDate: new Date('2018-1-1'),
-              endDate: new Date(),
-            },
-          },
-        }
-      : 'gatsby-plugin-webpack-bundle-analyser-v2',
-
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     `gatsby-plugin-offline`,

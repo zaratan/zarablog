@@ -38,7 +38,7 @@ yarn add -D @babel/preset-react # Pour que babel puisse traduire la syntaxe de R
 
 <FileName filename="webpack.common.babel.js" />
 
-```js webpack.common.babel.js
+```js
 resolve: {
   extensions: ['.js', '.jsx'],
 },
@@ -50,7 +50,7 @@ resolve: {
 
 <FileName filename=".babelrc" />
 
-```json .babelrc
+```json
 "presets": [
   "@babel/preset-env",
   "@babel/preset-react"
@@ -67,7 +67,7 @@ resolve: {
 
 Dans le `index.js` ajouter
 
-```js src/index.js
+```js
 // Au début
 import React from "react";
 import { render } from "react-dom";
@@ -121,7 +121,7 @@ Mais comment écrit on un component ? Il existe 2 façons. On va s'attarder sur 
 
 La première façon est une simple fonction (ici dans `my-component.jsx`):
 
-```js my-component.jsx
+```js
 import React from "react";
 
 export default () => <p>This is a component</p>;
@@ -141,7 +141,7 @@ La fonction de définition de notre component prend un objet en argument exemple
 
 <FileName filename="user.jsx" />
 
-```js user.jsx
+```js
 import React from "react";
 
 export default ({ name, age }) => (
@@ -170,7 +170,7 @@ On supprime tout le HTML de la page
 
 <FileName filename="index.html" />
 
-```html index.html
+```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -191,7 +191,7 @@ On injecte le component principal dans la page
 
 <FileName filename="index.js" />
 
-```js index.js
+```js
 import React from "react";
 import { render } from "react-dom";
 

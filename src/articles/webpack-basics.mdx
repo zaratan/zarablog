@@ -152,7 +152,7 @@ yarn add jquery
 
 <FileName filename="index.js" />
 
-```js index.js
+```js
 import _ from "lodash";
 import $ from "jquery";
 ```
@@ -183,7 +183,7 @@ On ajoute une section devServer dans `webpack.common.babel.js` indiquant au serv
 
 <FileName filename="webpack.config.babel.js" />
 
-```js webpack.common.babel.js
+```js
 devServer: {
   contentBase: './dist',
 }
@@ -195,7 +195,7 @@ On remplace les scripts précédents par ceux ci:
 
 <FileName filename="package.json" />
 
-```json package.json
+```json
 "scripts": {
   "dev:babel": "babel webpack.common.babel.js > webpack.common.js",
   "dev": "yarn dev:babel && webpack-dev-server -d --progress --config webpack.common.js",
@@ -222,7 +222,7 @@ Pour séparer la prod et le dev on va faire deux nouveaux fichiers un pour chaqu
 
 Dans webpack.dev.babel.js:
 
-```js webpack.dev.babel.js
+```js
 import merge from "webpack-merge";
 
 import common from "./webpack.common";
@@ -243,7 +243,7 @@ export default merge(common, client);
 
 Dans webpack.prod.babel.js:
 
-```js webpack.prod.babel.js
+```js
 import merge from "webpack-merge";
 
 import common from "./webpack.common";
@@ -267,7 +267,7 @@ Dans le common on retire ce qui avait trait au dev:
 
 <FileName filename="webpack.common.babel.js" />
 
-```js webpack.common.babel.js
+```js
 import path from "path";
 
 export default {
@@ -298,7 +298,7 @@ yarn add -D webpack-merge
 
 #### On modifie les scripts
 
-```json package.json
+```json
   "scripts": {
     "common:babel": "babel webpack.common.babel.js > webpack.common.js",
     "dev:babel": "yarn common:babel && babel webpack.dev.babel.js > webpack.dev.js",
@@ -344,7 +344,7 @@ Puis on ajoute dans les règles:
 
 <FileName filename="webpack.common.babel.js" />
 
-```js webpack.common.babel.js
+```js
 {
   test: /\.(html)$/,
   use: {
@@ -363,7 +363,7 @@ Puis, dans les règles:
 
 <FileName filename="webpack.common.babel.js" />
 
-```js webpack.common.babel.js
+```js
 {
   test: /\.(png|gif|woff|woff2|eot|ttf|svg)$/,
   loader: 'url-loader', // On essaye de transformer le fichier en string directement dans le html
@@ -385,7 +385,7 @@ Puis dans les règles:
 
 <FileName filename="webpack.common.babel.js" />
 
-```js webpack.common.babel.js
+```js
 {
   test: /\.css$/,
   use: ExtractTextPlugin.extract( // Je reviens là dessus plus bas

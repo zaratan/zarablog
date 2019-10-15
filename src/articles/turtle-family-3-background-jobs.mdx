@@ -90,7 +90,7 @@ La classe d'un mailer ressemble à ça:
 
 <FileName filename="app/mailers/turtle_mailer.rb" />
 
-```ruby app/mailers/turtle_mailer.rb
+```ruby
 class TurtleMailer < ApplicationMailer
   def create(turtle)
     @turtle_name = turtle.name
@@ -124,7 +124,7 @@ Ensuite on configure son fichier d'environnement de dev pour l'utiliser:
 
 <FileName filename="config/environnements/development.rb" />
 
-```ruby config/environments/development.rb
+```ruby
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
   :user_name => 'MAILTRAP_USER',
@@ -191,7 +191,7 @@ Pour ajouter sendgrid et le faire fonctionner il y a une suite d'étape a respec
 
 <FileName filename="Procfile" />
 
-```yaml Procfile
+```yaml
 worker: bundle exec sidekiq -q default -q mailers -c 10
 ```
 
@@ -208,7 +208,7 @@ Ajouter dans le fichier application.rb:
 
 <FileName filename="config/application.rb" />
 
-```ruby config/application.rb
+```ruby
 config.active_job.queue_adapter = :sidekiq
 ```
 
@@ -222,7 +222,7 @@ IMPORTANT: Pour ne pas créer des jobs en lançant ses tests: on ajoute à la fi
 
 <FileName filename="spec/rails_helper.rb" />
 
-```ruby spec/rails_helper.rb
+```ruby
 ActiveJob::Base.queue_adapter = :test
 ```
 
@@ -235,7 +235,7 @@ On ajoute l'add-on en staging/production, puis on ajoute dans notre fichier d'en
 
 <FileName filename="config/environnements/production.rb" />
 
-```ruby config/environments/production.rb
+```ruby
 config.action_mailer.delivery_method = :smtp
 config.action_mailer.perform_deliveries = true
 config.action_mailer.smtp_settings = {

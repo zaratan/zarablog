@@ -57,7 +57,7 @@ Cette partie va être la plus _"compliquée"_ de l'installation.
 
 Sous linux, j'ai tendance à bien aimer rvm et a vous conseiller une installation en ce sens [Rvm.io](http://rvm.io).
 
-```bash rvm_instal.sh
+```bash
 curl -L https://get.rvm.io | bash -s stable
 rvm install 1.9.3
 rvm use 1.9.3
@@ -76,7 +76,7 @@ Pour le reste le site de [Git](http://git-scm.com/) vous expliqueront la procéd
 - **Bundler**:
   Ici une simple commande:
 
-```bash bundler_install.sh
+```bash
 gem install bundler
 ```
 
@@ -86,7 +86,7 @@ Et c'est tout ce qu'il vous faut. Vous pouvez passer à l'installation d'Octopre
 
 L'installation est plutôt rapide.
 
-```bash installation_octopress.sh
+```bash
 #On clone le projet octopress sur github.
 git clone git://github.com/imathis/octopress.git mon_beau_blog
 cd mon_beau_blog
@@ -108,7 +108,7 @@ Je vais vous présenter la méthode que j'utilise. À savoir un déploiement via
 
 Il suffit de modifier l'entête du fichier Rakefile
 
-```ruby Rakefile
+```ruby
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
 ssh_user       = "utilisateur@serveur"
@@ -129,7 +129,7 @@ Pour publier du contenu sur votre blog il y a trois étapes à connaitre.
 
 Pour écrire un post on commence par générer le fichier dans lequel on va écrire notre post:
 
-```bash generation_post.sh
+```bash
 rake new_post["Mon beau post"]
 ```
 
@@ -150,7 +150,7 @@ Un outil pratique permet de prévisualiser notre travail.
 
 Une simple tache rake vous permet de redéployer automatiquement à chaque modification de fichier.
 
-```bash previsualisation.sh
+```bash
 rake preview
 ```
 
@@ -162,7 +162,7 @@ Une fois l'article finalisé, on peut passer au déploiement.
 
 Une fois l'article finalisé il suffit de déployer son blog.
 
-```bash deploiement.sh
+```bash
 rake generate # Genere le code html/css/js dans le dossier public.
 rake deploy   # Deploie le contenu du dossier public en fonction de la methode de deploiement choisi au debut.
 
@@ -229,7 +229,7 @@ Pour ajouter un repo distant vous avez plusieurs choix:
 
 Ajoutez ce repo distant à vos remote:
 
-```bash update_remote.sh
+```bash
 git remote rename origin octopress
 git remote add origin votre_addresse_de_remote
 ```
@@ -285,7 +285,8 @@ H/5 * * * *
 3. On indique que l'on veut build le projet via rvm
 4. On exécute un script shell
 
-```bash Build -> Executer un script shell
+```bash 
+# Build -> Executer un script shell
 bundle install
 rake generate
 rake deploy
