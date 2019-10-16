@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import slugify from 'slugify';
+import FontFaceObserver from 'fontfaceobserver';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -116,7 +117,16 @@ const TitleItem = styled(Link)`
     padding-left: 20px;
     color: ${props => props.theme.base1};
   }
-  font-family: Inconsolata;
+  font-family: Inconsolata, Consolas, Monaco, monospace;
+  font-family: ${({ inconsolataLoaded }) =>
+    inconsolataLoaded
+      ? 'Inconsolata, Consolas, Monaco, monospace'
+      : 'Consolas, Monaco, monospace'};
+  font-size: ${({ inconsolataLoaded }) =>
+    inconsolataLoaded ? '20px' : '16px'};
+  line-height: ${({ inconsolataLoaded }) => (inconsolataLoaded ? '1' : '1.25')};
+  letter-spacing: ${({ inconsolataLoaded }) =>
+    inconsolataLoaded ? '0' : '0.35px'};
   @media only screen and (max-width: ${props =>
       props.isProfileOpen ? `1310px` : `910px`}) {
     flex-direction: column;
@@ -125,6 +135,11 @@ const TitleItem = styled(Link)`
 
 const Index = () => {
   const { isProfileOpen } = useContext(LayoutContext);
+  const [inconsolataLoaded, setInconsolataLoaded] = useState(false);
+  useEffect(() => {
+    const InconsolataObserver = new FontFaceObserver('Inconsolata');
+    InconsolataObserver.load().then(() => setInconsolataLoaded(true));
+  }, []);
   const { nodes } = useStaticQuery(graphql`
     {
       allMdx(sort: { fields: frontmatter___date, order: DESC }) {
@@ -148,6 +163,7 @@ const Index = () => {
             <TitleItem
               to={`/${slugify(frontmatter.title.toLowerCase())}`}
               isProfileOpen={isProfileOpen}
+              inconsolataLoaded={inconsolataLoaded}
             >
               <DateHtml isProfileOpen={isProfileOpen}>
                 {format(new Date(frontmatter.date), 'd MMM yyyy', {

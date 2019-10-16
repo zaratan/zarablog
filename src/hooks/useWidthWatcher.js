@@ -13,7 +13,7 @@ export const useWidthWatcher = props => {
   try {
     firstWidth = window.innerWidth;
   } catch (error) {
-    console.log(error);
+    console.log("window object don't exist in SSR");
   }
   const [width, setWidth] = useState(firstWidth);
 
