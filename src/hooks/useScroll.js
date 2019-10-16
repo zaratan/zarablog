@@ -33,7 +33,6 @@ export const useScroll = props => {
       // If toWait is really low don't fire more often than
       // browser re-rendering
       window.requestAnimationFrame(function() {
-        console.log('ping');
         // Action
         actOnScroll({ prevScroll, nextScroll });
         // Update state

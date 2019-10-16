@@ -9,7 +9,10 @@ export default function HTML(props) {
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <meta name="google-site-verification" content="NRxEEOcQFFgZsHEu39yfQ2UJUX69eNfZof1JrPybwlo" />
+        <meta
+          name="google-site-verification"
+          content="NRxEEOcQFFgZsHEu39yfQ2UJUX69eNfZof1JrPybwlo"
+        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -17,6 +20,13 @@ export default function HTML(props) {
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/inconsolata/v18/QldKNThLqRwH-OJ1UHjlKGlZ5qhExfHw.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
         {props.headComponents}
       </head>

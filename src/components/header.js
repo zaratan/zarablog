@@ -34,7 +34,6 @@ const SiteTitle = styled.h1`
 `;
 
 const calculateHeaderPositioning = (currentScroll, scrollingUp) => {
-  console.log({ currentScroll, scrollingUp });
   if (currentScroll < 80) {
     return `
       top: 0;
