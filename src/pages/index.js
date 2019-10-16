@@ -126,7 +126,7 @@ const TitleItem = styled(Link)`
     inconsolataLoaded ? '20px' : '16px'};
   line-height: ${({ inconsolataLoaded }) => (inconsolataLoaded ? '1' : '1.25')};
   letter-spacing: ${({ inconsolataLoaded }) =>
-    inconsolataLoaded ? '0' : '0.35px'};
+    inconsolataLoaded ? '0' : '0.39px'};
   @media only screen and (max-width: ${props =>
       props.isProfileOpen ? `1310px` : `910px`}) {
     flex-direction: column;
