@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Background Jobs</h1>
+        </section>
+        <section>
+          <h2>Pourquoi et Quand?</h2>
+          <p>Plusieurs choses peuvent faire apparaitre ce besoin</p>
+          <ul>
+            <li class="fragment">Des requêtes trop longues</li>
+            <li class="fragment">Des tâches periodiques</li>
+            <li class="fragment">Les deux en même temps :D</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Comment ?</h2>
+          <p>Reflechissons au problème</p>
+          <img class="fragment" alt="PB" data-src="./BJ1.png" height="350" width="500">
+        </section>
+        <section>
+          <h2>Version 1</h2>
+          <p class="fragment">Ajoutons des threads/process</p>
+          <img class="fragment" alt="v1" src="./BJ2.png" height="350" width="500">
+          <p class="fragment">PB: Et si jamais y a une exception ?</p>
+        </section>
+        <section>
+          <h2>Version 2</h2>
+          <p class="fragment">Resilience aux erreurs<span class="fragment"> => DB + Retry</span></p>
+          <img class="fragment" alt="v1" src="./BJ3.png" height="350" width="500">
+          <p class="fragment">PB: Et si jamais on lance 400 jobs d'un coup ?</p>
+        </section>
+        <section>
+          <h2>Version 3</h2>
+          <p class="fragment">Pas trop de Jobs<span class="fragment"> => Queue</span></p>
+          <img class="fragment" alt="v1" src="./BJ4.png" height="350" width="500">
+          <p class="fragment">PB: Et si on a besoin de scale les jobs ?</p>
+        </section>
+        <section>
+          <h2>Version 4</h2>
+          <p class="fragment">Scale et trop de responsabilités<span class="fragment"> => Job serveur</span></p>
+          <img class="fragment" alt="v1" src="./BJ5.png" height="350" width="500">
+          <p class="fragment">PB: Démarrer un nouveau process c'est couteux…</p>
+        </section>
+        <section>
+          <h2>Version 5</h2>
+          <p class="fragment">Démarrage couteux<span class="fragment"> => Pool de worker</span></p>
+          <img class="fragment" alt="v1" src="./BJ6.png" height="350" width="500">
+          <p class="fragment">PB: Des dizaines de Worker qui poll la DB ça la stress…</p>
+        </section>
+        <section>
+          <h2>Version 6</h2>
+          <p class="fragment">Stress de la DB de prod<span class="fragment"> => Redis <3</span></p>
+          <img class="fragment" alt="v1" src="./BJ7.png" height="350" width="500">
+          <p class="fragment">PB: On vient de s'en créer plein \o/</p>
+        </section>
+        <section>
+          <h2>Lettre au père Noël</h2>
+          <ul>
+            <li class="fragment">Monitorer</li>
+            <li class="fragment">Concurrence</li>
+            <li class="fragment">Admin Interface</li>
+          </ul>
+          <p class="fragment">Log wait, Des logs corrects, Config, …</p>
+          <p class="fragment">Le faites pas vous même !</p>
+        </section>
+        <section>
+          <h2>Quelles sont nos options ?</h2>
+          <ul>
+            <li class="fragment">DelayedJob => PB: utilise PG</li>
+            <li class="fragment">Resque => Threads</li>
+            <li class="fragment">Sidekiq</li>
+          </ul>
+          <div class="fragment">
+            <h5>Exemple</h5>
+            <pre><code class="hljs" data-trim>
+              class HardWorker
+                include Sidekiq::Worker
+                def perform(name, count)
+                  # do something
+                end
+              end
+              
+              # Ailleur
+              HardWorker.perform_async("test", 3)
+	    </code></pre>
+          </div>
+        </section>
+        <section>
+          <h2>Pourquoi ActiveJob?</h2>
+          <ul>
+            <li>Une interface commune</li>
+            <li>S'interfacer facilement avec le reste de Rails</li>
+            <li>Passer des objets ActiveRecord</li>
+          </ul>
+          <div class="fragment">
+            <h5>Exemple</h5>
+            <pre><code class="hljs" data-trim>
+              class HardJob < ApplicationJob
+                queue_as :default
+   
+                def perform(user)
+                  # do something
+                end
+              end
+              
+              # Ailleur
+              HardJob.perform_later(User.first)
+	    </code></pre>
+          </div>
+        </section>
+        <section>
+          <h2>What could go wrong?</h2>
+          <p>So many things…</p>
+        </section>
+        <section>Questions ?</section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+// - https://github.com/hakimel/reveal.js#configuration
+// - https://github.com/hakimel/reveal.js#dependencies
+Reveal.initialize({
+  dependencies: [
+    { src: 'plugin/markdown/marked.js' },
+    { src: 'plugin/markdown/markdown.js' },
+    { src: 'plugin/notes/notes.js', async: true },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+    </script>
+  </body>
+</html>
